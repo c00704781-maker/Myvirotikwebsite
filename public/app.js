@@ -5,14 +5,8 @@ const statusBox = document.querySelector('#status');
 const results = document.querySelector('#results');
 const themeToggle = document.querySelector('#themeToggle');
 
-let config = {
-  bannerAdHtml: '',
-  showAdBeforeDownload: true,
-  adCooldownSeconds: 45
-};
 let selectedDownloadUrl = '';
 let selectedFormatLabel = '';
-let lastAdAt = 0;
 
 function setStatus(message, type = '') {
   statusBox.hidden = false;
@@ -41,72 +35,12 @@ function formatBytes(bytes) {
   return `${size.toFixed(size >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
 }
 
-function injectAdHtml(target) {
-  if (!target || !config.bannerAdHtml) return;
-  target.innerHTML = config.bannerAdHtml;
-  target.querySelectorAll('script').forEach((oldScript) => {
-    const newScript = document.createElement('script');
-    [...oldScript.attributes].forEach((attr) => newScript.setAttribute(attr.name, attr.value));
-    newScript.textContent = oldScript.textContent;
-    oldScript.replaceWith(newScript);
-  });
-}
-
-async function loadConfig() {
-  try {
-    const res = await fetch('/api/config', { cache: 'no-store' });
-    config = { ...config, ...(await res.json()) };
-  } catch {
-    // Site still works without ad configuration.
-  }
-}
-
 function buildDownloadUrl(formatId) {
   const params = new URLSearchParams({ url: input.value.trim(), format: formatId });
   return `/download?${params.toString()}`;
 }
 
-function shouldShowAd() {
-  if (!config.showAdBeforeDownload) return false;
-  const now = Date.now();
-  const cooldown = Number(config.adCooldownSeconds || 45) * 1000;
-  return now - lastAdAt > cooldown;
-}
-
-function closeAdModal() {
-  const modal = document.querySelector('#adModal');
-  if (modal) modal.remove();
-  revealFinalDownload();
-}
-
-function createAdModal() {
-  document.querySelector('#adModal')?.remove();
-
-  const modal = document.createElement('div');
-  modal.id = 'adModal';
-  modal.className = 'modal is-open';
-  modal.innerHTML = `
-    <div class="modal-card compact-ad" role="dialog" aria-modal="true" aria-label="Advertisement">
-      <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
-      <p class="eyebrow">Advertisement</p>
-      <h3>Your download is almost ready</h3>
-      <div id="modalAdSlot" class="ad-box">Ad placement</div>
-      <p class="modal-note">Close this screen to show the final download button.</p>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  const slot = modal.querySelector('#modalAdSlot');
-  injectAdHtml(slot);
-
-  modal.querySelector('#closeAd').addEventListener('click', closeAdModal);
-  modal.addEventListener('click', (event) => {
-    if (event.target === modal) closeAdModal();
-  });
-}
-
 function revealFinalDownload() {
-  lastAdAt = Date.now();
   const finalBox = document.querySelector('#finalDownloadBox');
   if (!finalBox || !selectedDownloadUrl) return;
 
@@ -123,14 +57,6 @@ function revealFinalDownload() {
   finalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function showAdOrRevealFinal() {
-  if (shouldShowAd()) {
-    createAdModal();
-    return;
-  }
-  revealFinalDownload();
-}
-
 results.addEventListener('click', (event) => {
   const button = event.target.closest('[data-select-format]');
   if (!button) return;
@@ -142,13 +68,7 @@ results.addEventListener('click', (event) => {
   document.querySelectorAll('[data-select-format]').forEach((el) => el.classList.remove('selected'));
   button.classList.add('selected');
 
-  const finalBox = document.querySelector('#finalDownloadBox');
-  if (finalBox) {
-    finalBox.hidden = true;
-    finalBox.innerHTML = '';
-  }
-
-  showAdOrRevealFinal();
+  revealFinalDownload();
 });
 
 function renderResults(data) {
@@ -185,7 +105,6 @@ form.addEventListener('submit', async (event) => {
 
   selectedDownloadUrl = '';
   selectedFormatLabel = '';
-  document.querySelector('#adModal')?.remove();
   parseBtn.disabled = true;
   results.hidden = true;
   clearStatus();
@@ -220,5 +139,3 @@ if (localStorage.getItem('virotik-theme') === 'light') {
   document.documentElement.classList.add('light');
   themeToggle.textContent = '☀';
 }
-
-loadConfig();
