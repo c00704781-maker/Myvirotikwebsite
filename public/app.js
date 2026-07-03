@@ -17,6 +17,22 @@ let selectedDownloadUrl = '';
 let selectedFormatLabel = '';
 let lastAdAt = 0;
 
+function hideAdModal() {
+  if (!adModal) return;
+  adModal.classList.remove('is-open');
+  adModal.hidden = true;
+  adModal.style.setProperty('display', 'none', 'important');
+}
+
+function openAdModal() {
+  if (!adModal) return;
+  adModal.hidden = false;
+  adModal.style.removeProperty('display');
+  adModal.classList.add('is-open');
+}
+
+hideAdModal();
+
 function setStatus(message, type = '') {
   statusBox.hidden = false;
   statusBox.className = `status ${type}`.trim();
@@ -79,7 +95,7 @@ function shouldShowAd() {
 
 function revealFinalDownload() {
   lastAdAt = Date.now();
-  adModal.hidden = true;
+  hideAdModal();
 
   const finalBox = document.querySelector('#finalDownloadBox');
   if (!finalBox || !selectedDownloadUrl) return;
@@ -99,13 +115,17 @@ function revealFinalDownload() {
 
 function showAdOrRevealFinal() {
   if (shouldShowAd()) {
-    adModal.hidden = false;
+    openAdModal();
     return;
   }
   revealFinalDownload();
 }
 
 closeAd.addEventListener('click', revealFinalDownload);
+closeAd.addEventListener('touchend', (event) => {
+  event.preventDefault();
+  revealFinalDownload();
+});
 
 results.addEventListener('click', (event) => {
   const button = event.target.closest('[data-select-format]');
