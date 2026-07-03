@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const APP_NAME = process.env.APP_NAME || 'ViroTik';
 const APP_URL = process.env.APP_URL || '';
-const BUILD_VERSION = '20260703-4';
+const BUILD_VERSION = '20260703-5';
 
 app.set('trust proxy', 1);
 app.use(helmet({
@@ -128,7 +128,8 @@ app.get('/api/config', (_req, res) => {
     appUrl: APP_URL,
     version: BUILD_VERSION,
     bannerAdHtml: process.env.BANNER_AD_HTML || '',
-    showAdBeforeDownload: process.env.SHOW_AD_BEFORE_DOWNLOAD !== 'false',
+    directLinkUrl: process.env.DIRECT_LINK_URL || '',
+    openDirectLinkOnDownload: process.env.OPEN_DIRECT_LINK_ON_DOWNLOAD === 'true',
     adCooldownSeconds: Number(process.env.AD_COOLDOWN_SECONDS || 45)
   });
 });
