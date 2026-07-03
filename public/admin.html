@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>ViroTik Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#07040c;--panel:rgba(255,255,255,.07);--panel2:rgba(255,255,255,.11);--line:rgba(255,255,255,.13);--text:#fbf8ff;--muted:#aaa2b8;--p:#8b5cf6;--pink:#ff2d75;--blue:#52a6ff;--green:#19db83;--red:#ff6b8e;}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 10% 0,rgba(139,92,246,.3),transparent 34rem),radial-gradient(circle at 90% 10%,rgba(255,45,117,.24),transparent 30rem),var(--bg);color:var(--text);min-height:100vh} button,input{font:inherit} .wrap{width:min(1180px,calc(100% - 28px));margin:0 auto;padding:24px 0 44px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,var(--p),var(--pink));font-size:26px;box-shadow:0 14px 42px rgba(139,92,246,.25)}h1{font-size:clamp(1.7rem,6vw,3rem);margin:0;letter-spacing:-.06em}.muted{color:var(--muted)}.pill{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:10px 14px;color:var(--muted);font-weight:800}.login{min-height:75vh;display:grid;place-items:center}.login-card{width:min(460px,100%);border:1px solid var(--line);background:rgba(255,255,255,.075);box-shadow:0 30px 100px rgba(0,0,0,.45);border-radius:32px;padding:28px}.login-card h2{font-size:2rem;margin:0 0 10px}.field{width:100%;height:58px;border:1px solid var(--line);background:rgba(0,0,0,.22);color:var(--text);border-radius:18px;padding:0 16px;margin:18px 0 12px;outline:none}.btn{height:58px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--p),var(--pink));color:#fff;font-weight:900;width:100%;cursor:pointer}.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr);margin:24px 0}.card,.panel{border:1px solid var(--line);background:var(--panel);border-radius:26px;padding:20px;box-shadow:0 22px 70px rgba(0,0,0,.18)}.metric{font-size:clamp(2rem,7vw,3.4rem);font-weight:900;letter-spacing:-.07em;margin:7px 0}.label{font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:900}.trend{font-weight:800;color:var(--green)}.main{grid-template-columns:1.3fr .7fr}.panel h2{margin:0 0 18px;font-size:1.35rem}.bars{display:grid;gap:12px}.bar{display:grid;gap:7px}.bar-head{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.9rem}.bar-track{height:11px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--p),var(--pink));min-width:3px}.chart{display:flex;align-items:end;gap:9px;height:220px;padding-top:18px}.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}.col-bar{width:100%;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,var(--pink),var(--p));min-height:5px}.col small{font-size:.7rem;color:var(--muted);white-space:nowrap}.table{width:100%;border-collapse:collapse}.table td{border-bottom:1px solid var(--line);padding:11px 0;color:var(--muted);vertical-align:top}.table td:first-child{color:var(--text);font-weight:800}.recent{display:grid;gap:10px;max-height:430px;overflow:auto}.event{display:grid;grid-template-columns:auto 1fr;gap:10px;border:1px solid var(--line);background:rgba(0,0,0,.14);border-radius:16px;padding:12px}.dot{width:12px;height:12px;border-radius:50%;margin-top:5px;background:var(--blue)}.event.download .dot{background:var(--green)}.event.parse .dot{background:var(--p)}.event.error .dot{background:var(--red)}.event strong{text-transform:capitalize}.tools{display:flex;gap:10px;flex-wrap:wrap}.small-btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:14px;padding:11px 14px;font-weight:900;cursor:pointer}.danger{background:rgba(255,45,117,.12);color:#ff93b2}.error{color:#ff93b2;margin-top:10px;font-weight:800}.hidden{display:none!important}@media(max-width:900px){.cards,.main{grid-template-columns:1fr 1fr}.top{align-items:flex-start;flex-direction:column}}@media(max-width:600px){.cards,.main{grid-template-columns:1fr}.tools{width:100%}.small-btn{flex:1}.card,.panel{padding:17px}.chart{height:180px}}
+  </style>
+</head>
+<body>
+  <section id="login" class="login">
+    <div class="login-card">
+      <div class="brand"><div class="logo">⬇</div><div><h2>ViroTik Admin</h2><div class="muted">Private analytics dashboard</div></div></div>
+      <input id="password" class="field" type="password" placeholder="Admin password" autocomplete="current-password">
+      <button id="loginBtn" class="btn">Open Dashboard</button>
+      <div id="loginError" class="error"></div>
+    </div>
+  </section>
+
+  <main id="dashboard" class="wrap hidden">
+    <div class="top">
+      <div class="brand"><div class="logo">⬇</div><div><h1>ViroTik Dashboard</h1><div class="muted">Visitors, downloads, countries, devices, and activity.</div></div></div>
+      <div class="tools"><span id="livePill" class="pill">Live: 0</span><button id="refreshBtn" class="small-btn">Refresh</button><button id="logoutBtn" class="small-btn">Logout</button><button id="resetBtn" class="small-btn danger">Reset</button></div>
+    </div>
+
+    <section class="grid cards">
+      <article class="card"><div class="label">Total Visitors</div><div id="totalVisitors" class="metric">0</div><div class="muted">Unique browser/IP IDs</div></article>
+      <article class="card"><div class="label">Page Views</div><div id="pageViews" class="metric">0</div><div id="todayViews" class="trend">Today: 0</div></article>
+      <article class="card"><div class="label">Parses</div><div id="parses" class="metric">0</div><div id="todayParses" class="trend">Today: 0</div></article>
+      <article class="card"><div class="label">Downloads</div><div id="downloads" class="metric">0</div><div id="todayDownloads" class="trend">Today: 0</div></article>
+    </section>
+
+    <section class="grid main">
+      <article class="panel"><h2>Last 7 Days</h2><div id="chart" class="chart"></div></article>
+      <article class="panel"><h2>Quick Ratio</h2><table class="table"><tbody id="ratioTable"></tbody></table></article>
+    </section>
+
+    <section class="grid main" style="margin-top:16px">
+      <article class="panel"><h2>Top Countries</h2><div id="countries" class="bars"></div></article>
+      <article class="panel"><h2>Devices</h2><div id="devices" class="bars"></div></article>
+    </section>
+
+    <section class="grid main" style="margin-top:16px">
+      <article class="panel"><h2>Top Pages</h2><div id="pages" class="bars"></div></article>
+      <article class="panel"><h2>Browsers</h2><div id="browsers" class="bars"></div></article>
+    </section>
+
+    <section class="grid main" style="margin-top:16px">
+      <article class="panel"><h2>Formats</h2><div id="formats" class="bars"></div></article>
+      <article class="panel"><h2>Recent Activity</h2><div id="recent" class="recent"></div></article>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => Number(n || 0).toLocaleString();
+    let key = localStorage.getItem('virotik-admin-key') || '';
+
+    function setText(id, value) { $(id).textContent = value; }
+    function pct(a, b) { return b ? Math.round((a / b) * 100) : 0; }
+
+    function renderBars(id, items) {
+      const max = Math.max(1, ...items.map((x) => x[1]));
+      $(id).innerHTML = items.length ? items.map(([name, count]) => `<div class="bar"><div class="bar-head"><span>${escapeHtml(name)}</span><b>${fmt(count)}</b></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(3, (count / max) * 100)}%"></div></div></div>`).join('') : '<div class="muted">No data yet.</div>';
+    }
+
+    function escapeHtml(str='') { return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function renderChart(days) {
+      const max = Math.max(1, ...days.map((d) => Math.max(d.pageViews || 0, d.downloads || 0)));
+      $('chart').innerHTML = days.map((d) => `<div class="col"><div class="col-bar" title="${fmt(d.pageViews)} views / ${fmt(d.downloads)} downloads" style="height:${Math.max(5, ((d.downloads || d.pageViews || 0) / max) * 100)}%"></div><small>${d.date.slice(5)}</small></div>`).join('');
+    }
+
+    function renderRecent(items) {
+      $('recent').innerHTML = items.length ? items.map((e) => `<div class="event ${escapeHtml(e.type)}"><span class="dot"></span><div><strong>${escapeHtml(e.type)}</strong><div class="muted">${new Date(e.at).toLocaleString()} · ${escapeHtml(e.country)} · ${escapeHtml(e.device)}</div>${e.title ? `<div>${escapeHtml(e.title)}</div>` : ''}${e.reason ? `<div class="error">${escapeHtml(e.reason)}</div>` : ''}</div></div>`).join('') : '<div class="muted">No activity yet.</div>';
+    }
+
+    async function loadStats() {
+      const res = await fetch(`/api/admin/stats?key=${encodeURIComponent(key)}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Wrong password or session expired.');
+      const data = await res.json();
+      $('login').classList.add('hidden');
+      $('dashboard').classList.remove('hidden');
+      setText('livePill', `Live: ${fmt(data.activeVisitors)}`);
+      setText('totalVisitors', fmt(data.totals.visitors));
+      setText('pageViews', fmt(data.totals.pageViews));
+      setText('parses', fmt(data.totals.parses));
+      setText('downloads', fmt(data.totals.downloads));
+      setText('todayViews', `Today: ${fmt(data.today.pageViews)}`);
+      setText('todayParses', `Today: ${fmt(data.today.parses)}`);
+      setText('todayDownloads', `Today: ${fmt(data.today.downloads)}`);
+      $('ratioTable').innerHTML = `<tr><td>Download / Visitor</td><td>${pct(data.totals.downloads, data.totals.visitors)}%</td></tr><tr><td>Parse / View</td><td>${pct(data.totals.parses, data.totals.pageViews)}%</td></tr><tr><td>Error Count</td><td>${fmt(data.totals.errors)}</td></tr><tr><td>Last Updated</td><td>${new Date(data.updatedAt).toLocaleString()}</td></tr>`;
+      renderChart(data.last7);
+      renderBars('countries', data.top.countries);
+      renderBars('devices', data.top.devices);
+      renderBars('pages', data.top.pages);
+      renderBars('browsers', data.top.browsers);
+      renderBars('formats', data.top.formats);
+      renderRecent(data.recent);
+    }
+
+    $('loginBtn').onclick = async () => {
+      key = $('password').value.trim();
+      localStorage.setItem('virotik-admin-key', key);
+      $('loginError').textContent = '';
+      try { await loadStats(); } catch (e) { $('loginError').textContent = e.message; }
+    };
+    $('password').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('loginBtn').click(); });
+    $('refreshBtn').onclick = () => loadStats().catch(() => {});
+    $('logoutBtn').onclick = () => { localStorage.removeItem('virotik-admin-key'); location.reload(); };
+    $('resetBtn').onclick = async () => {
+      if (!confirm('Reset all local ViroTik stats?')) return;
+      await fetch(`/api/admin/reset?key=${encodeURIComponent(key)}`, { method: 'POST' });
+      await loadStats();
+    };
+    if (key) loadStats().catch(() => {});
+    setInterval(() => { if (!$('dashboard').classList.contains('hidden')) loadStats().catch(() => {}); }, 30000);
+  </script>
+</body>
+</html>
