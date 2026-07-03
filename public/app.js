@@ -4,9 +4,6 @@ const parseBtn = document.querySelector('#parseBtn');
 const statusBox = document.querySelector('#status');
 const results = document.querySelector('#results');
 const themeToggle = document.querySelector('#themeToggle');
-const adModal = document.querySelector('#adModal');
-const closeAd = document.querySelector('#closeAd');
-const modalAdSlot = document.querySelector('#modalAdSlot');
 
 let config = {
   bannerAdHtml: '',
@@ -16,22 +13,6 @@ let config = {
 let selectedDownloadUrl = '';
 let selectedFormatLabel = '';
 let lastAdAt = 0;
-
-function hideAdModal() {
-  if (!adModal) return;
-  adModal.classList.remove('is-open');
-  adModal.hidden = true;
-  adModal.style.setProperty('display', 'none', 'important');
-}
-
-function openAdModal() {
-  if (!adModal) return;
-  adModal.hidden = false;
-  adModal.style.removeProperty('display');
-  adModal.classList.add('is-open');
-}
-
-hideAdModal();
 
 function setStatus(message, type = '') {
   statusBox.hidden = false;
@@ -73,9 +54,8 @@ function injectAdHtml(target) {
 
 async function loadConfig() {
   try {
-    const res = await fetch('/api/config');
+    const res = await fetch('/api/config', { cache: 'no-store' });
     config = { ...config, ...(await res.json()) };
-    injectAdHtml(modalAdSlot);
   } catch {
     // Site still works without ad configuration.
   }
@@ -93,10 +73,40 @@ function shouldShowAd() {
   return now - lastAdAt > cooldown;
 }
 
+function closeAdModal() {
+  const modal = document.querySelector('#adModal');
+  if (modal) modal.remove();
+  revealFinalDownload();
+}
+
+function createAdModal() {
+  document.querySelector('#adModal')?.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'adModal';
+  modal.className = 'modal is-open';
+  modal.innerHTML = `
+    <div class="modal-card compact-ad" role="dialog" aria-modal="true" aria-label="Advertisement">
+      <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
+      <p class="eyebrow">Advertisement</p>
+      <h3>Your download is almost ready</h3>
+      <div id="modalAdSlot" class="ad-box">Ad placement</div>
+      <p class="modal-note">Close this screen to show the final download button.</p>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const slot = modal.querySelector('#modalAdSlot');
+  injectAdHtml(slot);
+
+  modal.querySelector('#closeAd').addEventListener('click', closeAdModal);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeAdModal();
+  });
+}
+
 function revealFinalDownload() {
   lastAdAt = Date.now();
-  hideAdModal();
-
   const finalBox = document.querySelector('#finalDownloadBox');
   if (!finalBox || !selectedDownloadUrl) return;
 
@@ -115,17 +125,11 @@ function revealFinalDownload() {
 
 function showAdOrRevealFinal() {
   if (shouldShowAd()) {
-    openAdModal();
+    createAdModal();
     return;
   }
   revealFinalDownload();
 }
-
-closeAd.addEventListener('click', revealFinalDownload);
-closeAd.addEventListener('touchend', (event) => {
-  event.preventDefault();
-  revealFinalDownload();
-});
 
 results.addEventListener('click', (event) => {
   const button = event.target.closest('[data-select-format]');
@@ -181,6 +185,7 @@ form.addEventListener('submit', async (event) => {
 
   selectedDownloadUrl = '';
   selectedFormatLabel = '';
+  document.querySelector('#adModal')?.remove();
   parseBtn.disabled = true;
   results.hidden = true;
   clearStatus();
