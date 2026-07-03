@@ -41,35 +41,13 @@ function formatBytes(bytes) {
   return `${size.toFixed(size >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
 }
 
-function runScriptsInside(target) {
-  target.querySelectorAll('script').forEach((oldScript) => {
-    const newScript = document.createElement('script');
-    [...oldScript.attributes].forEach((attr) => newScript.setAttribute(attr.name, attr.value));
-    newScript.textContent = oldScript.textContent;
-    oldScript.replaceWith(newScript);
-  });
-}
-
-function injectAdHtml(target) {
-  if (!target || !config.bannerAdHtml) return false;
-  target.innerHTML = config.bannerAdHtml;
-  runScriptsInside(target);
-  return true;
-}
-
 async function loadConfig() {
   try {
     const res = await fetch('/api/config', { cache: 'no-store' });
     config = { ...config, ...(await res.json()) };
-  } catch {
-    // Site still works without ad configuration.
-  }
+  } catch {}
 
-  const inlineSlot = document.querySelector('#siteAdSlot');
-  if (inlineSlot && siteAd) {
-    const hasAd = injectAdHtml(inlineSlot);
-    siteAd.hidden = !hasAd;
-  }
+  if (siteAd) siteAd.hidden = true;
 }
 
 function buildDownloadUrl(formatId) {
@@ -78,7 +56,6 @@ function buildDownloadUrl(formatId) {
 }
 
 function startNativeDownload() {
-  document.querySelector('#adModal')?.remove();
   if (!selectedDownloadUrl) return;
 
   const finalBox = document.querySelector('#finalDownloadBox');
@@ -95,35 +72,6 @@ function startNativeDownload() {
   }
 
   window.location.href = selectedDownloadUrl;
-}
-
-function createAdModal() {
-  document.querySelector('#adModal')?.remove();
-
-  const modal = document.createElement('div');
-  modal.id = 'adModal';
-  modal.className = 'modal is-open';
-  modal.innerHTML = `
-    <div class="modal-card ad-modal-card" role="dialog" aria-modal="true" aria-label="Advertisement">
-      <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
-      <div class="ad-modal-head">
-        <span class="ad-badge modal-badge">Ad</span>
-        <p class="eyebrow">Advertisement</p>
-        <h3>Your download is almost ready</h3>
-      </div>
-      <div id="modalAdSlot" class="ad-box real-ad-box"></div>
-      <p class="modal-note">Close this ad to start the Safari download prompt.</p>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  const slot = modal.querySelector('#modalAdSlot');
-  const hasAd = injectAdHtml(slot);
-  if (!hasAd) {
-    slot.innerHTML = '<div class="ad-fallback">Advertisement space</div>';
-  }
-
-  modal.querySelector('#closeAd').addEventListener('click', startNativeDownload);
 }
 
 results.addEventListener('click', (event) => {
@@ -151,7 +99,7 @@ results.addEventListener('click', (event) => {
 
   document.querySelectorAll('[data-select-format]').forEach((el) => el.classList.remove('selected'));
   button.classList.add('selected');
-  createAdModal();
+  startNativeDownload();
 });
 
 function groupFormat(format) {
