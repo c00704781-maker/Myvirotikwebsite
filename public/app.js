@@ -208,4 +208,3 @@ if (localStorage.getItem('virotik-theme') === 'light') {
 
 loadConfig();
 trackPageView();
-setInterval(trackPageView, 120000);
