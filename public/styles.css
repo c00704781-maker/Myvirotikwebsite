@@ -175,10 +175,11 @@ details p { margin-top: 16px; }
 .footer-links a { color: var(--muted); }
 .footer-links a:hover { color: var(--text); }
 
+.modal[hidden] { display: none !important; }
 .modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.62); backdrop-filter: blur(8px); }
 .modal-card { width: min(520px, 100%); background: #151020; color: #fff; border: 1px solid rgba(255,255,255,.14); border-radius: 30px; padding: 24px; box-shadow: var(--shadow); position: relative; }
 .modal-card.compact-ad { margin-top: 0; }
-.modal-close { position: absolute; top: 12px; right: 14px; width: 42px; height: 42px; border-radius: 999px; border: 0; background: rgba(255,255,255,.08); color: #fff; font-size: 26px; }
+.modal-close { position: absolute; top: 12px; right: 14px; width: 42px; height: 42px; border-radius: 999px; border: 0; background: rgba(255,255,255,.08); color: #fff; font-size: 26px; z-index: 3; touch-action: manipulation; }
 .modal-note { color: #bdb3ce; margin: 10px 0 0; line-height: 1.55; }
 
 @media (min-width: 760px) {
