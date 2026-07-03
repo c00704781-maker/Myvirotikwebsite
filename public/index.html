@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="google-site-verification" content="29QuakUsnW4B-nUn_TsjCzSxTgR8MCEgAqYq9LXlPJ0" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="ViroTik is a fast TikTok video downloader for public TikTok links. Download TikTok videos in MP4, choose quality, and save videos on iPhone, Android, or desktop." />
   <meta name="keywords" content="TikTok video downloader, download TikTok video, download from TikTok, TikTok MP4 downloader, TikTok downloader iPhone, TikTok downloader online, ViroTik" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#090014" />
   <meta name="monetag" content="df008d5c0d7788b980abcf1874978b30" />
-  <link rel="canonical" href="https://virotik.com/" />
+  <link rel="canonical" href="https://www.virotik.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="ViroTik" />
   <meta property="og:title" content="ViroTik - TikTok Video Downloader" />
   <meta property="og:description" content="Download public TikTok videos in MP4. Paste a TikTok link, choose quality, and save the video on your device." />
-  <meta property="og:url" content="https://virotik.com/" />
+  <meta property="og:url" content="https://www.virotik.com/" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="ViroTik - TikTok Video Downloader" />
   <meta name="twitter:description" content="Fast online TikTok video downloader for public TikTok links." />
@@ -23,7 +24,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "ViroTik",
-    "url": "https://virotik.com/",
+    "url": "https://www.virotik.com/",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "iOS, Android, Windows, macOS",
     "description": "ViroTik is an online TikTok video downloader for public TikTok links. Paste a link, choose quality, and download MP4 video files.",
@@ -33,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260703-6" />
+  <link rel="stylesheet" href="/styles.css?v=20260703-8" />
 </head>
 <body>
   <div class="glow glow-a"></div>
@@ -52,7 +53,7 @@
     <section class="hero section-pad">
       <p class="eyebrow">ViroTik TikTok Downloader</p>
       <h1>TikTok Video Downloader<br><span>Download TikTok Videos in MP4</span></h1>
-      <p class="hero-copy">Paste a public TikTok video link, choose quality, watch the short ad step, then Safari will show the normal download prompt.</p>
+      <p class="hero-copy">Paste a public TikTok video link, choose quality, close the ad, then Safari will show the normal download prompt.</p>
 
       <form id="parseForm" class="download-box">
         <input id="urlInput" type="url" inputmode="url" autocomplete="off" placeholder="Paste TikTok video link here..." required />
@@ -63,17 +64,9 @@
       <div id="status" class="status" role="status" hidden></div>
       <section id="results" class="results" hidden></section>
 
-      <section class="site-ad" id="siteAd">
+      <section class="site-ad" id="siteAd" hidden>
         <button class="site-ad-toggle" id="siteAdToggle" type="button" aria-label="Collapse advertisement">⌄</button>
-        <div class="site-ad-media">
-          <span class="ad-badge">Ad</span>
-          <div class="ad-visual">⚡</div>
-        </div>
-        <div class="site-ad-body">
-          <p class="ad-kicker">Sponsored</p>
-          <h3>Fast mobile tools for creators</h3>
-          <p>Use this space for your Monetag banner or direct-link promotion without blocking the downloader.</p>
-        </div>
+        <div id="siteAdSlot" class="site-ad-slot"></div>
       </section>
     </section>
 
@@ -140,6 +133,6 @@
     <small>© 2026 ViroTik. Use responsibly and respect content owners.</small>
   </footer>
 
-  <script src="/app.js?v=20260703-6" defer></script>
+  <script src="/app.js?v=20260703-8" defer></script>
 </body>
 </html>
