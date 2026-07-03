@@ -1,0 +1,13 @@
+{
+  "name": "ViroTik - TikTok Video Downloader",
+  "short_name": "ViroTik",
+  "description": "Download public TikTok videos in MP4 using ViroTik.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090014",
+  "theme_color": "#090014",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
