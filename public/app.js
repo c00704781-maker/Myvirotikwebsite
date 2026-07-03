@@ -7,10 +7,7 @@ const themeToggle = document.querySelector('#themeToggle');
 const siteAd = document.querySelector('#siteAd');
 const siteAdToggle = document.querySelector('#siteAdToggle');
 
-let config = {
-  bannerAdHtml: '',
-  adCooldownSeconds: 45
-};
+let config = { bannerAdHtml: '', adCooldownSeconds: 45 };
 let selectedDownloadUrl = '';
 let selectedFormatLabel = '';
 
@@ -27,9 +24,7 @@ function clearStatus() {
 }
 
 function escapeHtml(str = '') {
-  return String(str).replace(/[&<>'"]/g, (c) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-  }[c]));
+  return String(str).replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 }
 
 function formatBytes(bytes) {
@@ -46,7 +41,6 @@ async function loadConfig() {
     const res = await fetch('/api/config', { cache: 'no-store' });
     config = { ...config, ...(await res.json()) };
   } catch {}
-
   if (siteAd) siteAd.hidden = true;
 }
 
@@ -56,22 +50,31 @@ function buildDownloadUrl(formatId) {
 }
 
 function startNativeDownload() {
+  document.querySelector('#adModal')?.remove();
   if (!selectedDownloadUrl) return;
-
   const finalBox = document.querySelector('#finalDownloadBox');
   if (finalBox) {
     finalBox.hidden = false;
-    finalBox.innerHTML = `
-      <div class="download-started">
-        <strong>Download started</strong>
-        <p>Safari should now show the normal MP4 download prompt.</p>
-        <a class="final-download" href="${selectedDownloadUrl}">Retry Download</a>
-        <button class="download-another" type="button" data-reset-download>Download Another →</button>
-      </div>
-    `;
+    finalBox.innerHTML = `<div class="download-started"><strong>Download started</strong><p>Safari should now show the normal MP4 download prompt.</p><a class="final-download" href="${selectedDownloadUrl}">Retry Download</a><button class="download-another" type="button" data-reset-download>Download Another →</button></div>`;
   }
-
   window.location.href = selectedDownloadUrl;
+}
+
+function showAdThenDownload() {
+  const adHtml = String(config.bannerAdHtml || '').trim();
+  if (!adHtml) {
+    startNativeDownload();
+    return;
+  }
+  document.querySelector('#adModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'adModal';
+  modal.className = 'modal is-open';
+  modal.innerHTML = `<div class="modal-card ad-modal-card" role="dialog" aria-modal="true"><button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button><p class="eyebrow">Advertisement</p><div class="ad-box real-ad-box"><iframe id="adFrame" title="Advertisement" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-same-origin"></iframe></div><p class="modal-note">Close the ad to start the download.</p></div>`;
+  document.body.appendChild(modal);
+  const frame = modal.querySelector('#adFrame');
+  frame.srcdoc = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;min-height:100%;display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}</style></head><body>${adHtml}</body></html>`;
+  modal.querySelector('#closeAd').addEventListener('click', startNativeDownload);
 }
 
 results.addEventListener('click', (event) => {
@@ -89,17 +92,14 @@ results.addEventListener('click', (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
-
   const button = event.target.closest('[data-select-format]');
   if (!button) return;
   event.preventDefault();
-
   selectedDownloadUrl = button.dataset.url;
   selectedFormatLabel = button.dataset.label || 'Selected quality';
-
   document.querySelectorAll('[data-select-format]').forEach((el) => el.classList.remove('selected'));
   button.classList.add('selected');
-  startNativeDownload();
+  showAdThenDownload();
 });
 
 function groupFormat(format) {
@@ -121,27 +121,11 @@ function renderResults(data) {
     const audio = format.hasAudio ? 'with audio' : 'video only';
     const label = `${format.label}${size ? ` · ${size}` : ''} · ${audio}`;
     const group = groupFormat(format);
-    return `<button class="download-link quality-option" type="button" data-select-format data-url="${buildDownloadUrl(format.id)}" data-label="${escapeHtml(label)}">
-      <span class="quality-tag">${escapeHtml(group)}</span>
-      <span class="quality-main">${escapeHtml(format.label)}</span>
-      <small>${size ? `${size} · ` : ''}${audio}</small>
-    </button>`;
+    return `<button class="download-link quality-option" type="button" data-select-format data-url="${buildDownloadUrl(format.id)}" data-label="${escapeHtml(label)}"><span class="quality-tag">${escapeHtml(group)}</span><span class="quality-main">${escapeHtml(format.label)}</span><small>${size ? `${size} · ` : ''}${audio}</small></button>`;
   }).join('');
-
   form.hidden = true;
   results.hidden = false;
-  results.innerHTML = `
-    <div class="video-head">
-      ${thumb}
-      <div>
-        <div class="video-title">${escapeHtml(data.title || 'TikTok video')}</div>
-        <div class="video-meta">${escapeHtml(data.uploader || 'Public TikTok link')}</div>
-      </div>
-    </div>
-    <h3 class="quality-heading">Choose Quality</h3>
-    <div class="format-list quality-grid">${buttons || '<p>No downloadable MP4 formats found.</p>'}</div>
-    <div id="finalDownloadBox" class="final-box" hidden></div>
-  `;
+  results.innerHTML = `<div class="video-head">${thumb}<div><div class="video-title">${escapeHtml(data.title || 'TikTok video')}</div><div class="video-meta">${escapeHtml(data.uploader || 'Public TikTok link')}</div></div></div><h3 class="quality-heading">Choose Quality</h3><div class="format-list quality-grid">${buttons || '<p>No downloadable MP4 formats found.</p>'}</div><div id="finalDownloadBox" class="final-box" hidden></div>`;
   results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -149,20 +133,14 @@ form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const url = input.value.trim();
   if (!url) return;
-
   selectedDownloadUrl = '';
   selectedFormatLabel = '';
   parseBtn.disabled = true;
   results.hidden = true;
   clearStatus();
   setStatus('Loading...');
-
   try {
-    const res = await fetch('/api/parse', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url })
-    });
+    const res = await fetch('/api/parse', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Parse failed.');
     setStatus('Video found. Choose a quality below.', 'ok');
