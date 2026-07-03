@@ -63,7 +63,9 @@ button, input { font: inherit; }
   font-weight: 800;
   cursor: pointer;
 }
-.nav a.active, .nav a:hover, .icon-btn:hover { color: var(--text); background: var(--panel); }
+.nav a.active, .nav a:hover, .icon-btn:hover, .brand-pill { color: var(--text); background: var(--panel); }
+.brand-pill { display: inline-flex; align-items: center; gap: 8px; }
+.nav-logo { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; background: linear-gradient(145deg, var(--brand), var(--brand-2)); color: #fff; font-size: 14px; }
 
 .section-pad { width: min(960px, calc(100% - 32px)); margin: 0 auto; padding: 42px 0 40px; }
 .slim { width: min(850px, calc(100% - 32px)); padding-top: 70px; }
@@ -75,11 +77,13 @@ button, input { font: inherit; }
   height: 86px;
   margin: 42px auto 20px;
   border-radius: 28px;
-  background: linear-gradient(145deg, rgba(139,92,246,.45), rgba(255,45,117,.35));
+  background: linear-gradient(145deg, rgba(139,92,246,.95), rgba(255,45,117,.86));
   border: 1px solid var(--line);
   box-shadow: inset 0 0 24px rgba(255,255,255,.13), 0 20px 60px rgba(139,92,246,.18);
   font-size: 43px;
 }
+.logo-card { animation: floatLogo 4s ease-in-out infinite; }
+@keyframes floatLogo { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .mini-logo { width: 42px; height: 42px; margin: 0; border-radius: 14px; font-size: 22px; }
 .eyebrow { margin: 0 0 12px; color: var(--brand); font-weight: 900; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
 h1 { margin: 0; font-size: clamp(2.15rem, 7vw, 5.1rem); line-height: .98; letter-spacing: -.07em; }
@@ -194,22 +198,26 @@ details p { margin-top: 16px; }
 .footer-links a { color: var(--muted); }
 .footer-links a:hover { color: var(--text); }
 
-.modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.62); backdrop-filter: blur(8px); }
-.modal-card { width: min(520px, 100%); background: #151020; color: #fff; border: 1px solid rgba(255,255,255,.14); border-radius: 30px; padding: 24px; box-shadow: var(--shadow); position: relative; }
-.modal-card.compact-ad { margin-top: 0; }
-.modal-close { position: absolute; top: 12px; right: 14px; width: 42px; height: 42px; border-radius: 999px; border: 0; background: rgba(255,255,255,.08); color: #fff; font-size: 26px; z-index: 3; touch-action: manipulation; }
-.modal-note { color: #bdb3ce; margin: 10px 0 0; line-height: 1.55; }
+.modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; }
+.modal[hidden] { display: none !important; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.72); backdrop-filter: blur(7px); }
+.modal-card { position: relative; width: min(720px, 100%); border: 1px solid var(--line); background: #161020; border-radius: 32px; padding: 24px; box-shadow: var(--shadow); }
+.modal-close { position: absolute; top: 18px; right: 18px; width: 54px; height: 54px; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); color: white; font-size: 2rem; cursor: pointer; }
+.modal-kicker { color: var(--brand); font-weight: 900; letter-spacing: .1em; margin: 0 0 8px; text-transform: uppercase; }
+.modal-card h2 { text-align: left; font-size: clamp(1.8rem, 6vw, 2.7rem); margin-right: 60px; }
+.modal-card p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; }
 
-@media (min-width: 760px) {
-  .download-box { grid-template-columns: 1fr 190px; }
+@media (min-width: 720px) {
+  .download-box { grid-template-columns: 1fr 240px; }
   .cards { grid-template-columns: repeat(3, 1fr); }
-  .final-ready, .download-started { grid-template-columns: 1fr 220px; align-items: center; }
 }
+
 @media (max-width: 520px) {
-  .nav a, .icon-btn { padding: 10px 12px; font-size: .92rem; }
-  .section-pad { width: min(100% - 24px, 960px); padding-top: 26px; }
-  .hero { min-height: 78vh; }
+  .nav { max-width: calc(100vw - 20px); overflow-x: auto; }
+  .nav a, .icon-btn { padding: 10px 12px; white-space: nowrap; }
+  .brand-pill span:last-child { display: none; }
+  .logo-card { margin-top: 28px; }
+  .section-pad { width: min(100% - 24px, 960px); }
   .video-head { align-items: flex-start; }
-  .video-head img { width: 72px; height: 72px; }
-  .site-ad { margin-top: 28px; }
+  .footer-links { flex-wrap: wrap; gap: 14px; }
 }
