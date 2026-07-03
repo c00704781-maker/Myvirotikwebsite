@@ -7,9 +7,40 @@ const themeToggle = document.querySelector('#themeToggle');
 const siteAd = document.querySelector('#siteAd');
 const siteAdToggle = document.querySelector('#siteAdToggle');
 
-let config = { bannerAdHtml: '', adCooldownSeconds: 45 };
+let config = { bannerAdHtml: '', adCooldownSeconds: 45, gaMeasurementId: '' };
 let selectedDownloadUrl = '';
 let selectedFormatLabel = '';
+
+function getVisitorId() {
+  let id = localStorage.getItem('virotik-visitor-id');
+  if (!id) {
+    id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+    localStorage.setItem('virotik-visitor-id', id);
+  }
+  return id;
+}
+
+function trackPageView() {
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ visitorId: getVisitorId(), path: location.pathname || '/', referrer: document.referrer || 'Direct' }),
+    keepalive: true
+  }).catch(() => {});
+}
+
+function installGoogleAnalytics(id) {
+  if (!id || document.querySelector('#ga-script')) return;
+  const s = document.createElement('script');
+  s.id = 'ga-script';
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag(){ dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', id);
+}
 
 function setStatus(message, type = '') {
   statusBox.hidden = false;
@@ -40,6 +71,7 @@ async function loadConfig() {
   try {
     const res = await fetch('/api/config', { cache: 'no-store' });
     config = { ...config, ...(await res.json()) };
+    installGoogleAnalytics(config.gaMeasurementId);
   } catch {}
   if (siteAd) siteAd.hidden = true;
 }
@@ -57,6 +89,7 @@ function startNativeDownload() {
     finalBox.hidden = false;
     finalBox.innerHTML = `<div class="download-started"><strong>Download started</strong><p>Safari should now show the normal MP4 download prompt.</p><a class="final-download" href="${selectedDownloadUrl}">Retry Download</a><button class="download-another" type="button" data-reset-download>Download Another →</button></div>`;
   }
+  if (window.gtag) window.gtag('event', 'download', { event_category: 'TikTok', event_label: selectedFormatLabel || 'MP4' });
   window.location.href = selectedDownloadUrl;
 }
 
@@ -140,9 +173,10 @@ form.addEventListener('submit', async (event) => {
   clearStatus();
   setStatus('Loading...');
   try {
-    const res = await fetch('/api/parse', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
+    const res = await fetch('/api/parse', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, visitorId: getVisitorId() }) });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Parse failed.');
+    if (window.gtag) window.gtag('event', 'parse_tiktok_link');
     setStatus('Video found. Choose a quality below.', 'ok');
     renderResults(data);
   } catch (err) {
@@ -173,3 +207,5 @@ if (localStorage.getItem('virotik-theme') === 'light') {
 }
 
 loadConfig();
+trackPageView();
+setInterval(trackPageView, 120000);
