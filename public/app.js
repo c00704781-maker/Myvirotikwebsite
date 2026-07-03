@@ -6,17 +6,15 @@ const results = document.querySelector('#results');
 const themeToggle = document.querySelector('#themeToggle');
 const adModal = document.querySelector('#adModal');
 const closeAd = document.querySelector('#closeAd');
-const continueDownload = document.querySelector('#continueDownload');
-const nativeAdTop = document.querySelector('#nativeAdTop');
 const modalAdSlot = document.querySelector('#modalAdSlot');
 
 let config = {
-  monetagScriptUrl: '',
   bannerAdHtml: '',
   showAdBeforeDownload: true,
   adCooldownSeconds: 45
 };
-let pendingDownloadUrl = '';
+let selectedDownloadUrl = '';
+let selectedFormatLabel = '';
 let lastAdAt = 0;
 
 function setStatus(message, type = '') {
@@ -46,17 +44,8 @@ function formatBytes(bytes) {
   return `${size.toFixed(size >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
 }
 
-function loadExternalScript(src) {
-  if (!src || document.querySelector(`script[data-ad-script="${src}"]`)) return;
-  const script = document.createElement('script');
-  script.src = src;
-  script.async = true;
-  script.dataset.adScript = src;
-  document.head.appendChild(script);
-}
-
 function injectAdHtml(target) {
-  if (!config.bannerAdHtml) return;
+  if (!target || !config.bannerAdHtml) return;
   target.innerHTML = config.bannerAdHtml;
   target.querySelectorAll('script').forEach((oldScript) => {
     const newScript = document.createElement('script');
@@ -70,8 +59,6 @@ async function loadConfig() {
   try {
     const res = await fetch('/api/config');
     config = { ...config, ...(await res.json()) };
-    if (config.monetagScriptUrl) loadExternalScript(config.monetagScriptUrl);
-    injectAdHtml(nativeAdTop);
     injectAdHtml(modalAdSlot);
   } catch {
     // Site still works without ad configuration.
@@ -90,34 +77,54 @@ function shouldShowAd() {
   return now - lastAdAt > cooldown;
 }
 
-function startDownload(url) {
+function revealFinalDownload() {
   lastAdAt = Date.now();
-  window.location.href = url;
+  adModal.hidden = true;
+
+  const finalBox = document.querySelector('#finalDownloadBox');
+  if (!finalBox || !selectedDownloadUrl) return;
+
+  finalBox.hidden = false;
+  finalBox.innerHTML = `
+    <div class="final-ready">
+      <div>
+        <strong>Download ready</strong>
+        <p>${escapeHtml(selectedFormatLabel || 'Selected quality')}</p>
+      </div>
+      <a class="final-download" href="${selectedDownloadUrl}">⬇ Download Video</a>
+    </div>
+  `;
+  finalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function showAdThenDownload(url) {
-  pendingDownloadUrl = url;
-  if (!shouldShowAd()) {
-    startDownload(url);
+function showAdOrRevealFinal() {
+  if (shouldShowAd()) {
+    adModal.hidden = false;
     return;
   }
-  adModal.hidden = false;
+  revealFinalDownload();
 }
 
-closeAd.addEventListener('click', () => {
-  adModal.hidden = true;
-});
-
-continueDownload.addEventListener('click', () => {
-  adModal.hidden = true;
-  if (pendingDownloadUrl) startDownload(pendingDownloadUrl);
-});
+closeAd.addEventListener('click', revealFinalDownload);
 
 results.addEventListener('click', (event) => {
-  const link = event.target.closest('[data-download]');
-  if (!link) return;
+  const button = event.target.closest('[data-select-format]');
+  if (!button) return;
   event.preventDefault();
-  showAdThenDownload(link.getAttribute('href'));
+
+  selectedDownloadUrl = button.dataset.url;
+  selectedFormatLabel = button.dataset.label || 'Selected quality';
+
+  document.querySelectorAll('[data-select-format]').forEach((el) => el.classList.remove('selected'));
+  button.classList.add('selected');
+
+  const finalBox = document.querySelector('#finalDownloadBox');
+  if (finalBox) {
+    finalBox.hidden = true;
+    finalBox.innerHTML = '';
+  }
+
+  showAdOrRevealFinal();
 });
 
 function renderResults(data) {
@@ -126,10 +133,11 @@ function renderResults(data) {
   const buttons = formats.map((format) => {
     const size = formatBytes(format.filesize);
     const audio = format.hasAudio ? 'with audio' : 'video only';
-    return `<a class="download-link" data-download href="${buildDownloadUrl(format.id)}">
-      <span>⬇</span>
-      <span>Download <small>(${escapeHtml(format.label)}${size ? ` · ${size}` : ''} · ${audio})</small></span>
-    </a>`;
+    const label = `${format.label}${size ? ` · ${size}` : ''} · ${audio}`;
+    return `<button class="download-link" type="button" data-select-format data-url="${buildDownloadUrl(format.id)}" data-label="${escapeHtml(label)}">
+      <span>✓</span>
+      <span>Select <small>(${escapeHtml(label)})</small></span>
+    </button>`;
   }).join('');
 
   results.hidden = false;
@@ -142,10 +150,8 @@ function renderResults(data) {
       </div>
     </div>
     <div class="format-list">${buttons || '<p>No downloadable MP4 formats found.</p>'}</div>
-    <div class="ad-slot" id="nativeAdResult">Advertisement</div>
+    <div id="finalDownloadBox" class="final-box" hidden></div>
   `;
-  const resultAd = document.querySelector('#nativeAdResult');
-  if (resultAd) injectAdHtml(resultAd);
 }
 
 form.addEventListener('submit', async (event) => {
@@ -153,6 +159,8 @@ form.addEventListener('submit', async (event) => {
   const url = input.value.trim();
   if (!url) return;
 
+  selectedDownloadUrl = '';
+  selectedFormatLabel = '';
   parseBtn.disabled = true;
   results.hidden = true;
   clearStatus();
