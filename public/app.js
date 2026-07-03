@@ -41,9 +41,7 @@ function formatBytes(bytes) {
   return `${size.toFixed(size >= 10 || idx === 0 ? 0 : 1)} ${units[idx]}`;
 }
 
-function injectAdHtml(target) {
-  if (!target || !config.bannerAdHtml) return;
-  target.innerHTML = config.bannerAdHtml;
+function runScriptsInside(target) {
   target.querySelectorAll('script').forEach((oldScript) => {
     const newScript = document.createElement('script');
     [...oldScript.attributes].forEach((attr) => newScript.setAttribute(attr.name, attr.value));
@@ -52,12 +50,25 @@ function injectAdHtml(target) {
   });
 }
 
+function injectAdHtml(target) {
+  if (!target || !config.bannerAdHtml) return false;
+  target.innerHTML = config.bannerAdHtml;
+  runScriptsInside(target);
+  return true;
+}
+
 async function loadConfig() {
   try {
     const res = await fetch('/api/config', { cache: 'no-store' });
     config = { ...config, ...(await res.json()) };
   } catch {
     // Site still works without ad configuration.
+  }
+
+  const inlineSlot = document.querySelector('#siteAdSlot');
+  if (inlineSlot && siteAd) {
+    const hasAd = injectAdHtml(inlineSlot);
+    siteAd.hidden = !hasAd;
   }
 }
 
@@ -93,17 +104,25 @@ function createAdModal() {
   modal.id = 'adModal';
   modal.className = 'modal is-open';
   modal.innerHTML = `
-    <div class="modal-card compact-ad" role="dialog" aria-modal="true" aria-label="Advertisement">
+    <div class="modal-card ad-modal-card" role="dialog" aria-modal="true" aria-label="Advertisement">
       <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
-      <p class="eyebrow">Advertisement</p>
-      <h3>Your download is almost ready</h3>
-      <div id="modalAdSlot" class="ad-box">Ad placement</div>
-      <p class="modal-note">Close this screen to start the normal Safari download prompt.</p>
+      <div class="ad-modal-head">
+        <span class="ad-badge modal-badge">Ad</span>
+        <p class="eyebrow">Advertisement</p>
+        <h3>Your download is almost ready</h3>
+      </div>
+      <div id="modalAdSlot" class="ad-box real-ad-box"></div>
+      <p class="modal-note">Close this ad to start the Safari download prompt.</p>
     </div>
   `;
   document.body.appendChild(modal);
 
-  injectAdHtml(modal.querySelector('#modalAdSlot'));
+  const slot = modal.querySelector('#modalAdSlot');
+  const hasAd = injectAdHtml(slot);
+  if (!hasAd) {
+    slot.innerHTML = '<div class="ad-fallback">Advertisement space</div>';
+  }
+
   modal.querySelector('#closeAd').addEventListener('click', startNativeDownload);
 }
 
