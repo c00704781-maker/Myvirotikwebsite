@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="ViroTik downloads public TikTok videos in MP4 from your browser." />
+  <meta name="theme-color" content="#090014" />
+  <title>ViroTik - TikTok Video Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home" class="active">Home</a>
+      <a href="#features">Features</a>
+      <a href="#how">How to use?</a>
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">☾</button>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero section-pad">
+      <div class="logo-card" aria-hidden="true">
+        <span>⬇</span>
+      </div>
+      <p class="eyebrow">ViroTik Web</p>
+      <h1>TikTok Video Downloader<br><span>Fast MP4 Downloads</span></h1>
+      <p class="hero-copy">Paste a public TikTok video link, parse it, then choose the quality you want. Built for mobile, Railway hosting, and clean ad placement.</p>
+
+      <form id="parseForm" class="download-box">
+        <input id="urlInput" type="url" inputmode="url" autocomplete="off" placeholder="Paste TikTok video link here..." required />
+        <button id="parseBtn" type="submit">Parse Now</button>
+      </form>
+      <p class="hint">Public TikTok videos only. Private or deleted videos will not work.</p>
+
+      <div id="nativeAdTop" class="ad-slot">Advertisement</div>
+      <div id="status" class="status" role="status" hidden></div>
+      <section id="results" class="results" hidden></section>
+    </section>
+
+    <section id="features" class="section-pad slim">
+      <h2>Why Choose ViroTik?</h2>
+      <p class="section-intro">A simple web version of the ViroTik bot with smoother access from Safari, Chrome, Android, and desktop.</p>
+      <div class="cards">
+        <article class="card featured">
+          <span class="card-icon">⚡</span>
+          <h3>Fast Parse</h3>
+          <p>The server reads the public TikTok link and prepares available MP4 choices.</p>
+        </article>
+        <article class="card">
+          <span class="card-icon">🎬</span>
+          <h3>Quality Options</h3>
+          <p>When TikTok provides multiple qualities, ViroTik shows them clearly before download.</p>
+        </article>
+        <article class="card">
+          <span class="card-icon">🛡</span>
+          <h3>Privacy First</h3>
+          <p>No account is required. Links are processed live and are not saved in a database.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="how" class="section-pad slim steps-section">
+      <h2>How to Download TikTok Videos?</h2>
+      <div class="steps">
+        <div class="step"><b>1</b><div><h3>Copy the TikTok link</h3><p>Open TikTok, tap Share, then choose Copy link.</p></div></div>
+        <div class="step"><b>2</b><div><h3>Paste it in ViroTik</h3><p>Paste the URL in the field above and press Parse Now.</p></div></div>
+        <div class="step"><b>3</b><div><h3>Choose quality and save</h3><p>Press the download button next to your preferred MP4 quality.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section-pad slim faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <details open>
+        <summary>Can ViroTik download private TikTok videos?</summary>
+        <p>No. Private, deleted, region-blocked, or login-only videos cannot be downloaded.</p>
+      </details>
+      <details>
+        <summary>Do I need to sign up?</summary>
+        <p>No sign-up and no payment are required.</p>
+      </details>
+      <details>
+        <summary>Why does a link fail?</summary>
+        <p>The video may be private, deleted, restricted, or temporarily unavailable. Try another public link.</p>
+      </details>
+      <details>
+        <summary>Does ViroTik show ads?</summary>
+        <p>Yes. Ads are placed around the download flow so the site can stay free, without blocking every click.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand"><span class="mini-logo">⬇</span><strong>ViroTik</strong></div>
+    <p>Fast public TikTok video downloads from your browser.</p>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#how">How to use?</a>
+    </div>
+    <small>© 2026 ViroTik. Use responsibly and respect content owners.</small>
+  </footer>
+
+  <div id="adModal" class="modal" hidden>
+    <div class="modal-card">
+      <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
+      <p class="eyebrow">Support ViroTik</p>
+      <h3>Your download is ready</h3>
+      <p>A short ad may open before the download starts. This keeps the site free without forcing sign-up.</p>
+      <div id="modalAdSlot" class="ad-box">Ad placement</div>
+      <button id="continueDownload" type="button" class="wide-btn">Continue Download</button>
+    </div>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
