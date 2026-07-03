@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20260703-4" />
+  <link rel="stylesheet" href="/styles.css?v=20260703-5" />
 </head>
 <body>
   <div class="glow glow-a"></div>
@@ -29,16 +29,29 @@
     <section class="hero section-pad">
       <p class="eyebrow">ViroTik Web</p>
       <h1>TikTok Video Downloader<br><span>Fast MP4 Downloads</span></h1>
-      <p class="hero-copy">Paste a public TikTok video link, parse it, choose quality, close the short ad screen, then download.</p>
+      <p class="hero-copy">Paste a public TikTok video link, choose quality, watch the short ad step, then Safari will show the normal download prompt.</p>
 
       <form id="parseForm" class="download-box">
         <input id="urlInput" type="url" inputmode="url" autocomplete="off" placeholder="Paste TikTok video link here..." required />
-        <button id="parseBtn" type="submit">Parse Now</button>
+        <button id="parseBtn" type="submit">Download Now</button>
       </form>
       <p class="hint">Public TikTok videos only. Private or deleted videos will not work.</p>
 
       <div id="status" class="status" role="status" hidden></div>
       <section id="results" class="results" hidden></section>
+
+      <section class="site-ad" id="siteAd">
+        <button class="site-ad-toggle" id="siteAdToggle" type="button" aria-label="Collapse advertisement">⌄</button>
+        <div class="site-ad-media">
+          <span class="ad-badge">Ad</span>
+          <div class="ad-visual">⚡</div>
+        </div>
+        <div class="site-ad-body">
+          <p class="ad-kicker">Sponsored</p>
+          <h3>Fast mobile tools for creators</h3>
+          <p>Use this space for your Monetag banner or direct-link promotion without blocking the downloader.</p>
+        </div>
+      </section>
     </section>
 
     <section id="features" class="section-pad slim">
@@ -58,7 +71,7 @@
         <article class="card">
           <span class="card-icon">🛡</span>
           <h3>Controlled Ad Step</h3>
-          <p>No automatic popup on page load. The ad step appears only after selecting quality.</p>
+          <p>The ad step appears after choosing quality, then the normal Safari download prompt starts.</p>
         </article>
       </div>
     </section>
@@ -67,8 +80,8 @@
       <h2>How to Download TikTok Videos?</h2>
       <div class="steps">
         <div class="step"><b>1</b><div><h3>Copy the TikTok link</h3><p>Open TikTok, tap Share, then choose Copy link.</p></div></div>
-        <div class="step"><b>2</b><div><h3>Paste it in ViroTik</h3><p>Paste the URL in the field above and press Parse Now.</p></div></div>
-        <div class="step"><b>3</b><div><h3>Choose quality and save</h3><p>Pick the quality, close the ad screen, then press the final download button.</p></div></div>
+        <div class="step"><b>2</b><div><h3>Paste it in ViroTik</h3><p>Paste the URL in the field above and press Download Now.</p></div></div>
+        <div class="step"><b>3</b><div><h3>Choose quality and save</h3><p>Pick the quality, close the ad screen, then Safari will ask to download the MP4.</p></div></div>
       </div>
     </section>
 
@@ -88,7 +101,7 @@
       </details>
       <details>
         <summary>Does ViroTik show ads?</summary>
-        <p>Yes, but the main flow uses one controlled ad screen after quality selection.</p>
+        <p>Yes. There is one inline page ad and one closeable ad step before starting the download.</p>
       </details>
     </section>
   </main>
@@ -104,6 +117,6 @@
     <small>© 2026 ViroTik. Use responsibly and respect content owners.</small>
   </footer>
 
-  <script src="/app.js?v=20260703-4" defer></script>
+  <script src="/app.js?v=20260703-5" defer></script>
 </body>
 </html>
