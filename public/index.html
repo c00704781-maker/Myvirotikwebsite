@@ -6,7 +6,6 @@
   <meta name="description" content="ViroTik downloads public TikTok videos in MP4 from your browser." />
   <meta name="theme-color" content="#090014" />
   <meta name="monetag" content="df008d5c0d7788b980abcf1874978b30" />
-  <script src="https://quge5.com/88/tag.min.js" data-zone="255935" async data-cfasync="false"></script>
   <title>ViroTik - TikTok Video Downloader</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,12 +27,9 @@
 
   <main id="home">
     <section class="hero section-pad">
-      <div class="logo-card" aria-hidden="true">
-        <span>⬇</span>
-      </div>
       <p class="eyebrow">ViroTik Web</p>
       <h1>TikTok Video Downloader<br><span>Fast MP4 Downloads</span></h1>
-      <p class="hero-copy">Paste a public TikTok video link, parse it, then choose the quality you want. Built for mobile, Railway hosting, and clean ad placement.</p>
+      <p class="hero-copy">Paste a public TikTok video link, parse it, choose quality, then close the short ad screen to reveal the final download button.</p>
 
       <form id="parseForm" class="download-box">
         <input id="urlInput" type="url" inputmode="url" autocomplete="off" placeholder="Paste TikTok video link here..." required />
@@ -41,7 +37,6 @@
       </form>
       <p class="hint">Public TikTok videos only. Private or deleted videos will not work.</p>
 
-      <div id="nativeAdTop" class="ad-slot">Advertisement</div>
       <div id="status" class="status" role="status" hidden></div>
       <section id="results" class="results" hidden></section>
     </section>
@@ -62,8 +57,8 @@
         </article>
         <article class="card">
           <span class="card-icon">🛡</span>
-          <h3>Privacy First</h3>
-          <p>No account is required. Links are processed live and are not saved in a database.</p>
+          <h3>Less Aggressive Ads</h3>
+          <p>The ad step appears after choosing quality, then the final download button is revealed.</p>
         </article>
       </div>
     </section>
@@ -73,7 +68,7 @@
       <div class="steps">
         <div class="step"><b>1</b><div><h3>Copy the TikTok link</h3><p>Open TikTok, tap Share, then choose Copy link.</p></div></div>
         <div class="step"><b>2</b><div><h3>Paste it in ViroTik</h3><p>Paste the URL in the field above and press Parse Now.</p></div></div>
-        <div class="step"><b>3</b><div><h3>Choose quality and save</h3><p>Press the download button next to your preferred MP4 quality.</p></div></div>
+        <div class="step"><b>3</b><div><h3>Choose quality and save</h3><p>Pick the quality, close the ad screen, then press the final download button.</p></div></div>
       </div>
     </section>
 
@@ -93,7 +88,7 @@
       </details>
       <details>
         <summary>Does ViroTik show ads?</summary>
-        <p>Yes. Ads are placed around the download flow so the site can stay free, without blocking every click.</p>
+        <p>Yes, but the main flow uses one controlled ad screen after quality selection.</p>
       </details>
     </section>
   </main>
@@ -110,13 +105,12 @@
   </footer>
 
   <div id="adModal" class="modal" hidden>
-    <div class="modal-card">
+    <div class="modal-card compact-ad">
       <button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button>
-      <p class="eyebrow">Support ViroTik</p>
-      <h3>Your download is ready</h3>
-      <p>A short ad may open before the download starts. This keeps the site free without forcing sign-up.</p>
+      <p class="eyebrow">Advertisement</p>
+      <h3>Your download is almost ready</h3>
       <div id="modalAdSlot" class="ad-box">Ad placement</div>
-      <button id="continueDownload" type="button" class="wide-btn">Continue Download</button>
+      <p class="modal-note">Close this screen to show the final download button.</p>
     </div>
   </div>
 
