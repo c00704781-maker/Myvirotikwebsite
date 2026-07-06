@@ -81,6 +81,21 @@ function buildDownloadUrl(formatId) {
   return `/download?${params.toString()}`;
 }
 
+function runAdHtml(container, html) {
+  container.innerHTML = '';
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  const scripts = [...template.content.querySelectorAll('script')];
+  scripts.forEach((oldScript) => oldScript.remove());
+  container.appendChild(template.content.cloneNode(true));
+  scripts.forEach((oldScript) => {
+    const script = document.createElement('script');
+    [...oldScript.attributes].forEach((attr) => script.setAttribute(attr.name, attr.value));
+    if (oldScript.textContent) script.textContent = oldScript.textContent;
+    container.appendChild(script);
+  });
+}
+
 function startNativeDownload() {
   document.querySelector('#adModal')?.remove();
   if (!selectedDownloadUrl) return;
@@ -103,10 +118,13 @@ function showAdThenDownload() {
   const modal = document.createElement('div');
   modal.id = 'adModal';
   modal.className = 'modal is-open';
-  modal.innerHTML = `<div class="modal-card ad-modal-card" role="dialog" aria-modal="true"><button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button><p class="eyebrow">Advertisement</p><div class="ad-box real-ad-box"><iframe id="adFrame" title="Advertisement" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-same-origin"></iframe></div><p class="modal-note">Close the ad to start the download.</p></div>`;
+  modal.innerHTML = `<div class="modal-card ad-modal-card" role="dialog" aria-modal="true"><button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button><p class="eyebrow">Sponsored</p><h2 class="ad-title">Your download is ready</h2><div class="ad-box real-ad-box" id="realAdSlot"><div class="ad-loading">Loading ad...</div></div><p class="modal-note">Close this screen to start the download.</p></div>`;
   document.body.appendChild(modal);
-  const frame = modal.querySelector('#adFrame');
-  frame.srcdoc = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;width:100%;min-height:100%;display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}</style></head><body>${adHtml}</body></html>`;
+  const slot = modal.querySelector('#realAdSlot');
+  runAdHtml(slot, adHtml);
+  setTimeout(() => {
+    if (!slot.textContent.trim() && slot.children.length === 0) slot.innerHTML = '<div class="ad-loading">Ad may be blocked or unavailable for this visitor.</div>';
+  }, 2500);
   modal.querySelector('#closeAd').addEventListener('click', startNativeDownload);
 }
 
