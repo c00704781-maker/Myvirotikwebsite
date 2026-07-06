@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ff2d75"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" rx="64" fill="#090014"/>
+  <g transform="translate(80 68)">
+    <rect width="224" height="224" rx="54" fill="url(#g)"/>
+    <path d="M112 42v96" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+    <path d="M61 116l51 60 51-60" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M55 194h114" stroke="#fff" stroke-width="22" stroke-linecap="round"/>
+  </g>
+  <text x="350" y="170" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="900">ViroTik</text>
+  <text x="354" y="238" fill="#bdb3cc" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">TikTok Video Downloader</text>
+</svg>
