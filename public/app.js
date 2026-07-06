@@ -109,21 +109,21 @@ function startNativeDownload() {
 }
 
 function showAdThenDownload() {
-  const adHtml = String(config.bannerAdHtml || '').trim();
-  if (!adHtml) {
-    startNativeDownload();
-    return;
+  let adHtml = String(config.bannerAdHtml || '').trim();
+  const adConfigured = Boolean(adHtml);
+  if (!adConfigured) {
+    adHtml = '<div style="font-family:Arial,sans-serif;text-align:center;padding:22px;color:#1f1630"><strong>Ad slot is ready</strong><br><span style="color:#666">BANNER_AD_HTML is empty in Railway Variables.</span></div>';
   }
   document.querySelector('#adModal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'adModal';
   modal.className = 'modal is-open';
-  modal.innerHTML = `<div class="modal-card ad-modal-card" role="dialog" aria-modal="true"><button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button><p class="eyebrow">Sponsored</p><h2 class="ad-title">Your download is ready</h2><div class="ad-box real-ad-box" id="realAdSlot"><div class="ad-loading">Loading ad...</div></div><p class="modal-note">Close this screen to start the download.</p></div>`;
+  modal.innerHTML = `<div class="modal-card ad-modal-card" role="dialog" aria-modal="true"><button id="closeAd" class="modal-close" type="button" aria-label="Close ad">×</button><p class="eyebrow">Sponsored</p><h2 class="ad-title">Your download is ready</h2><div class="ad-box real-ad-box" id="realAdSlot"><div class="ad-loading">Loading ad...</div></div><p class="modal-note">${adConfigured ? 'Close this screen to start the download.' : 'No ad code is configured yet. Add BANNER_AD_HTML in Railway, then redeploy.'}</p></div>`;
   document.body.appendChild(modal);
   const slot = modal.querySelector('#realAdSlot');
   runAdHtml(slot, adHtml);
   setTimeout(() => {
-    if (!slot.textContent.trim() && slot.children.length === 0) slot.innerHTML = '<div class="ad-loading">Ad may be blocked or unavailable for this visitor.</div>';
+    if (adConfigured && (!slot.textContent.trim() && slot.children.length === 0)) slot.innerHTML = '<div class="ad-loading">Ad may be blocked or unavailable for this visitor.</div>';
   }, 2500);
   modal.querySelector('#closeAd').addEventListener('click', startNativeDownload);
 }
