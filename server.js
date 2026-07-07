@@ -19,9 +19,36 @@ const APP_NAME = process.env.APP_NAME || 'ViroTik';
 const APP_URL = process.env.APP_URL || '';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'virotik-admin';
 const GA_MEASUREMENT_ID = process.env.GA_MEASUREMENT_ID || '';
-const BUILD_VERSION = '20260703-9';
+const BUILD_VERSION = '20260712-seo1';
 const STATS_FILE = process.env.STATS_FILE || '/tmp/virotik-stats.json';
 const VIEW_DEDUPE_MS = Number(process.env.VIEW_DEDUPE_SECONDS || 1800) * 1000;
+
+const SEO_PAGES = [
+  ['download-tiktok-video-hd','Download TikTok Video HD','Download public TikTok videos in HD MP4 with ViroTik. Paste a link, choose the available quality, and save the video on mobile or desktop.','Download TikTok Video HD','ViroTik shows available MP4 quality options for public TikTok links when the source video supports them.'],
+  ['tiktok-downloader-android','TikTok Downloader for Android','Use ViroTik on Android to save public TikTok videos in MP4 from Chrome or your mobile browser.','TikTok Downloader for Android','Copy the public TikTok link, paste it in ViroTik, choose quality, and download the MP4 file.'],
+  ['tiktok-downloader-safari','TikTok Downloader for Safari','Use ViroTik in Safari to download public TikTok videos as MP4 on iPhone, iPad, or Mac.','TikTok Downloader for Safari','ViroTik works in the browser and does not require a separate app or account.'],
+  ['tiktok-downloader-chrome','TikTok Downloader for Chrome','Download public TikTok videos in MP4 with ViroTik using Google Chrome on phone or desktop.','TikTok Downloader for Chrome','Open ViroTik in Chrome, paste the video link, and choose an available MP4 option.'],
+  ['save-tiktok-video','Save TikTok Video','Save public TikTok videos as MP4 with ViroTik. Fast browser-based TikTok video saving for mobile and desktop.','Save TikTok Video','ViroTik is built for public video links and normal browser downloads.'],
+  ['tiktok-video-to-mp4','TikTok Video to MP4','Convert a public TikTok video link into an MP4 download option with ViroTik.','TikTok Video to MP4','Paste a public link and ViroTik prepares MP4 formats when available.'],
+  ['download-tiktok-without-app','Download TikTok Without App','Use ViroTik online without installing an app. Paste a public TikTok link and save MP4 through your browser.','Download TikTok Without App','ViroTik works from the web, so iPhone, Android, and desktop users can use it directly.'],
+  ['tiktok-downloader-online-free','TikTok Downloader Online','ViroTik is an online TikTok downloader for public video links with MP4 options and browser-based saving.','TikTok Downloader Online','No sign-up is needed to use the public video downloader.'],
+  ['download-tiktok-video-link','Download TikTok Video Link','Paste a TikTok video link into ViroTik and save available MP4 quality options.','Download TikTok Video Link','Use the share link from a public TikTok video and start the download flow.'],
+  ['tiktok-video-saver','TikTok Video Saver','ViroTik helps save public TikTok videos in MP4 from a browser on phone or desktop.','TikTok Video Saver','The service is designed for public links only. Private or deleted videos may not work.'],
+  ['download-tiktok-on-iphone-safari','Download TikTok on iPhone Safari','Download public TikTok videos on iPhone using Safari and ViroTik MP4 options.','Download TikTok on iPhone Safari','Copy the link from TikTok, paste it into ViroTik, then accept the Safari download prompt.'],
+  ['tiktok-downloader-no-signup','TikTok Downloader No Sign Up','Use ViroTik without creating an account. Paste a public TikTok link and save MP4 in your browser.','TikTok Downloader No Sign Up','The downloader is simple: paste, choose quality, and save.'],
+  ['public-tiktok-video-downloader','Public TikTok Video Downloader','ViroTik downloads public TikTok video links only. Save MP4 files through your browser.','Public TikTok Video Downloader','Private, restricted, or deleted videos cannot be downloaded through ViroTik.'],
+  ['tiktok-mp4-hd','TikTok MP4 HD','Save available HD MP4 formats from public TikTok video links using ViroTik.','TikTok MP4 HD','Quality depends on what the original public video provides.'],
+  ['save-tiktok-mp4-iphone','Save TikTok MP4 on iPhone','Save a public TikTok video as MP4 on iPhone with ViroTik and Safari.','Save TikTok MP4 on iPhone','Use the normal iPhone download flow after choosing a quality option.'],
+  ['download-tiktok-video-online','Download TikTok Video Online','Download public TikTok videos online with ViroTik. Paste a link and save MP4 from your browser.','Download TikTok Video Online','ViroTik works on mobile and desktop browsers.'],
+  ['tiktok-downloader-mobile','TikTok Downloader Mobile','Use ViroTik as a mobile TikTok downloader for public video links on iPhone and Android.','TikTok Downloader Mobile','The page is optimized for small screens and browser downloads.'],
+  ['fast-tiktok-downloader','Fast TikTok Downloader','ViroTik is a fast TikTok downloader for public video links and MP4 saving.','Fast TikTok Downloader','Paste a link, wait for ViroTik to read it, then choose the MP4 option.'],
+  ['tiktok-downloader-desktop','TikTok Downloader Desktop','Use ViroTik on Windows, Mac, and desktop browsers to save public TikTok videos as MP4.','TikTok Downloader Desktop','Chrome, Safari, Edge, and other modern browsers can use ViroTik.'],
+  ['tiktok-downloader-edge','TikTok Downloader for Edge','Download public TikTok videos with Microsoft Edge using ViroTik MP4 options.','TikTok Downloader for Edge','Paste the public link in ViroTik and choose a format.'],
+  ['copy-tiktok-link-download','Copy TikTok Link and Download','Copy a public TikTok video link, paste it into ViroTik, and save MP4.','Copy TikTok Link and Download','This page explains the simple link-to-MP4 flow.'],
+  ['tiktok-video-download-guide','TikTok Video Download Guide','A simple guide for downloading public TikTok videos using ViroTik on phone or desktop.','TikTok Video Download Guide','Follow the steps: copy link, paste, choose quality, save.'],
+  ['best-tiktok-downloader-virotik','ViroTik TikTok Downloader','ViroTik is a browser-based TikTok downloader for public links, MP4 quality options, and mobile use.','ViroTik TikTok Downloader','Use ViroTik when you need a quick public TikTok video saving page.'],
+  ['tiktok-downloader-quality-options','TikTok Downloader Quality Options','ViroTik displays available quality options for public TikTok videos when formats are provided by the source.','TikTok Downloader Quality Options','Some videos have several MP4 formats while others have one available option.']
+].map(([slug,title,description,h1,body]) => ({ slug,title,description,h1,body }));
 
 app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
@@ -29,266 +56,45 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false }));
 
-app.get(['/og-image.png', '/og-image.jpg', '/IMG_6949.png'], (_req, res) => {
-  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
-  res.type('png');
-  res.sendFile(path.join(__dirname, 'public', 'IMG_6949.png'));
-});
+app.get(['/og-image.png', '/og-image.jpg', '/IMG_6949.png'], (_req, res) => { res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300'); res.type('png'); res.sendFile(path.join(__dirname, 'public', 'IMG_6949.png')); });
+app.get(['/download-tiktok-video', '/download-tiktok-video/', '/mp4-quality', '/mp4-quality/'], (_req, res) => res.redirect(301, '/'));
 
-app.get(['/download-tiktok-video', '/download-tiktok-video/', '/mp4-quality', '/mp4-quality/'], (_req, res) => {
-  res.redirect(301, '/');
-});
-
-app.use((req, res, next) => {
-  if (req.path === '/' || req.path.endsWith('.html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-  }
-  next();
-});
+app.use((req, res, next) => { if (req.path === '/' || req.path.endsWith('.html') || req.path.endsWith('.js') || req.path.endsWith('.css')) { res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0'); } next(); });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 0, etag: false }));
 
 const apiLimiter = rateLimit({ windowMs: 60 * 1000, limit: Number(process.env.RATE_LIMIT_PER_MINUTE || 25), standardHeaders: true, legacyHeaders: false });
-
-const emptyStats = () => ({
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-  totals: { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 },
-  visitors: {},
-  daily: {},
-  pages: {},
-  referrers: {},
-  countries: {},
-  devices: {},
-  browsers: {},
-  formats: {},
-  recent: []
-});
-
-let statsCache = null;
-let saveTimer = null;
-
+const emptyStats = () => ({ createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), totals: { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 }, visitors: {}, daily: {}, pages: {}, referrers: {}, countries: {}, devices: {}, browsers: {}, formats: {}, recent: [] });
+let statsCache = null; let saveTimer = null;
 function dayKey(date = new Date()) { return date.toISOString().slice(0, 10); }
-
-async function loadStats() {
-  if (statsCache) return statsCache;
-  try {
-    const raw = await fs.readFile(STATS_FILE, 'utf8');
-    statsCache = { ...emptyStats(), ...JSON.parse(raw) };
-    statsCache.totals ||= emptyStats().totals;
-    statsCache.visitors ||= {};
-    statsCache.daily ||= {};
-    statsCache.pages ||= {};
-    statsCache.referrers ||= {};
-    statsCache.countries ||= {};
-    statsCache.devices ||= {};
-    statsCache.browsers ||= {};
-    statsCache.formats ||= {};
-    statsCache.recent ||= [];
-  } catch {
-    statsCache = emptyStats();
-  }
-  return statsCache;
-}
-
-function scheduleSave() {
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    try {
-      statsCache.updatedAt = new Date().toISOString();
-      await fs.writeFile(STATS_FILE, JSON.stringify(statsCache, null, 2));
-    } catch (err) {
-      console.error('stats save failed:', err?.message || err);
-    }
-  }, 250);
-}
-
-function inc(obj, key, amount = 1) {
-  const safeKey = String(key || 'Unknown').slice(0, 120);
-  obj[safeKey] = (obj[safeKey] || 0) + amount;
-}
-
-function addRecent(type, payload = {}) {
-  statsCache.recent.unshift({ type, at: new Date().toISOString(), ...payload });
-  statsCache.recent = statsCache.recent.slice(0, 80);
-}
-
-function hashIp(req) {
-  const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-  return crypto.createHash('sha256').update(String(ip).split(',')[0].trim()).digest('hex').slice(0, 18);
-}
-
-function getVisitorId(req, providedId = '') {
-  const clean = String(providedId || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  return clean || hashIp(req);
-}
-
+async function loadStats() { if (statsCache) return statsCache; try { const raw = await fs.readFile(STATS_FILE, 'utf8'); statsCache = { ...emptyStats(), ...JSON.parse(raw) }; statsCache.totals ||= emptyStats().totals; statsCache.visitors ||= {}; statsCache.daily ||= {}; statsCache.pages ||= {}; statsCache.referrers ||= {}; statsCache.countries ||= {}; statsCache.devices ||= {}; statsCache.browsers ||= {}; statsCache.formats ||= {}; statsCache.recent ||= []; } catch { statsCache = emptyStats(); } return statsCache; }
+function scheduleSave() { if (saveTimer) clearTimeout(saveTimer); saveTimer = setTimeout(async () => { try { statsCache.updatedAt = new Date().toISOString(); await fs.writeFile(STATS_FILE, JSON.stringify(statsCache, null, 2)); } catch (err) { console.error('stats save failed:', err?.message || err); } }, 250); }
+function inc(obj, key, amount = 1) { const safeKey = String(key || 'Unknown').slice(0, 120); obj[safeKey] = (obj[safeKey] || 0) + amount; }
+function addRecent(type, payload = {}) { statsCache.recent.unshift({ type, at: new Date().toISOString(), ...payload }); statsCache.recent = statsCache.recent.slice(0, 80); }
+function hashIp(req) { const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown'; return crypto.createHash('sha256').update(String(ip).split(',')[0].trim()).digest('hex').slice(0, 18); }
+function getVisitorId(req, providedId = '') { const clean = String(providedId || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64); return clean || hashIp(req); }
 function isBot(ua = '') { return /bot|crawler|spider|preview|facebookexternalhit|discordbot|twitterbot|slurp|whatsapp|telegrambot|googlebot|bingbot/i.test(ua); }
-function parseDevice(ua = '') {
-  if (/iphone|ipad|ipod/i.test(ua)) return 'iPhone / iPad';
-  if (/android/i.test(ua)) return 'Android';
-  if (/windows/i.test(ua)) return 'Windows';
-  if (/macintosh|mac os/i.test(ua)) return 'Mac';
-  if (/linux/i.test(ua)) return 'Linux';
-  return 'Unknown';
-}
-function parseBrowser(ua = '') {
-  if (/crios|chrome/i.test(ua) && !/edg/i.test(ua)) return 'Chrome';
-  if (/safari/i.test(ua) && !/chrome|crios/i.test(ua)) return 'Safari';
-  if (/firefox/i.test(ua)) return 'Firefox';
-  if (/edg/i.test(ua)) return 'Edge';
-  if (/discord/i.test(ua)) return 'Discord';
-  return 'Other';
-}
+function parseDevice(ua = '') { if (/iphone|ipad|ipod/i.test(ua)) return 'iPhone / iPad'; if (/android/i.test(ua)) return 'Android'; if (/windows/i.test(ua)) return 'Windows'; if (/macintosh|mac os/i.test(ua)) return 'Mac'; if (/linux/i.test(ua)) return 'Linux'; return 'Unknown'; }
+function parseBrowser(ua = '') { if (/crios|chrome/i.test(ua) && !/edg/i.test(ua)) return 'Chrome'; if (/safari/i.test(ua) && !/chrome|crios/i.test(ua)) return 'Safari'; if (/firefox/i.test(ua)) return 'Firefox'; if (/edg/i.test(ua)) return 'Edge'; if (/discord/i.test(ua)) return 'Discord'; return 'Other'; }
 function getCountry(req) { return String(req.headers['cf-ipcountry'] || req.headers['x-vercel-ip-country'] || req.headers['x-country'] || 'Unknown').toUpperCase().slice(0, 32); }
-
-async function recordEvent(req, type, extra = {}) {
-  await loadStats();
-  const ua = String(req.headers['user-agent'] || '');
-  if (isBot(ua) && type === 'view') return;
-
-  const today = dayKey();
-  statsCache.daily[today] ||= { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 };
-
-  const visitorId = getVisitorId(req, extra.visitorId);
-  const now = Date.now();
-  const existing = statsCache.visitors[visitorId] || null;
-  const isNewVisitor = !existing;
-  const isNewVisitorToday = existing?.lastVisitDay !== today;
-  const pathName = extra.path || req.path || '/';
-  const shouldCountView = type !== 'view' || isNewVisitor || existing?.lastPath !== pathName || !existing?.lastViewMs || (now - Number(existing.lastViewMs)) > VIEW_DEDUPE_MS;
-
-  statsCache.visitors[visitorId] = {
-    firstSeen: existing?.firstSeen || new Date().toISOString(),
-    lastSeen: new Date().toISOString(),
-    lastSeenMs: now,
-    lastVisitDay: type === 'view' ? today : existing?.lastVisitDay,
-    lastViewMs: type === 'view' && shouldCountView ? now : existing?.lastViewMs,
-    lastPath: type === 'view' && shouldCountView ? pathName : existing?.lastPath,
-    country: getCountry(req),
-    device: parseDevice(ua),
-    browser: parseBrowser(ua)
-  };
-
-  if (isNewVisitor) statsCache.totals.visitors += 1;
-  if (type === 'view' && (isNewVisitor || isNewVisitorToday)) statsCache.daily[today].visitors += 1;
-
-  if (type === 'view') {
-    if (!shouldCountView) { scheduleSave(); return; }
-    statsCache.totals.pageViews += 1;
-    statsCache.daily[today].pageViews += 1;
-    inc(statsCache.pages, pathName);
-    inc(statsCache.referrers, extra.referrer || req.headers.referer || 'Direct');
-  }
-  if (type === 'parse') { statsCache.totals.parses += 1; statsCache.daily[today].parses += 1; }
-  if (type === 'download') { statsCache.totals.downloads += 1; statsCache.daily[today].downloads += 1; inc(statsCache.formats, extra.format || 'Unknown'); }
-  if (type === 'error') { statsCache.totals.errors += 1; statsCache.daily[today].errors += 1; }
-
-  if (type !== 'view' || shouldCountView || isNewVisitor) {
-    inc(statsCache.countries, getCountry(req));
-    inc(statsCache.devices, parseDevice(ua));
-    inc(statsCache.browsers, parseBrowser(ua));
-    addRecent(type, { visitorId, country: getCountry(req), device: parseDevice(ua), browser: parseBrowser(ua), ...extra });
-  }
-  scheduleSave();
-}
-
-function makeStatsSnapshot() {
-  const now = Date.now();
-  const activeVisitors = Object.values(statsCache.visitors || {}).filter((v) => now - Number(v.lastSeenMs || 0) < 5 * 60 * 1000).length;
-  const today = statsCache.daily[dayKey()] || { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 };
-  const last7 = Object.entries(statsCache.daily).sort(([a], [b]) => a.localeCompare(b)).slice(-7).map(([date, data]) => ({ date, ...data }));
-  return {
-    app: APP_NAME,
-    version: BUILD_VERSION,
-    updatedAt: statsCache.updatedAt,
-    totals: statsCache.totals,
-    today,
-    activeVisitors,
-    last7,
-    top: {
-      countries: Object.entries(statsCache.countries).sort((a, b) => b[1] - a[1]).slice(0, 10),
-      devices: Object.entries(statsCache.devices).sort((a, b) => b[1] - a[1]).slice(0, 10),
-      browsers: Object.entries(statsCache.browsers).sort((a, b) => b[1] - a[1]).slice(0, 10),
-      pages: Object.entries(statsCache.pages).sort((a, b) => b[1] - a[1]).slice(0, 10),
-      referrers: Object.entries(statsCache.referrers).sort((a, b) => b[1] - a[1]).slice(0, 10),
-      formats: Object.entries(statsCache.formats).sort((a, b) => b[1] - a[1]).slice(0, 10)
-    },
-    recent: statsCache.recent.slice(0, 30)
-  };
-}
-
-function requireAdmin(req, res, next) {
-  const key = String(req.query.key || req.headers['x-admin-password'] || '');
-  if (key !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Unauthorized' });
-  next();
-}
-
-function isTikTokUrl(rawUrl) {
-  try {
-    const url = new URL(rawUrl);
-    const host = url.hostname.toLowerCase().replace(/^www\./, '');
-    return ['tiktok.com', 'vm.tiktok.com', 'vt.tiktok.com', 'm.tiktok.com'].some((allowed) => host === allowed || host.endsWith(`.${allowed}`));
-  } catch { return false; }
-}
+async function recordEvent(req, type, extra = {}) { await loadStats(); const ua = String(req.headers['user-agent'] || ''); if (isBot(ua) && type === 'view') return; const today = dayKey(); statsCache.daily[today] ||= { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 }; const visitorId = getVisitorId(req, extra.visitorId); const now = Date.now(); const existing = statsCache.visitors[visitorId] || null; const isNewVisitor = !existing; const isNewVisitorToday = existing?.lastVisitDay !== today; const pathName = extra.path || req.path || '/'; const shouldCountView = type !== 'view' || isNewVisitor || existing?.lastPath !== pathName || !existing?.lastViewMs || (now - Number(existing.lastViewMs)) > VIEW_DEDUPE_MS; statsCache.visitors[visitorId] = { firstSeen: existing?.firstSeen || new Date().toISOString(), lastSeen: new Date().toISOString(), lastSeenMs: now, lastVisitDay: type === 'view' ? today : existing?.lastVisitDay, lastViewMs: type === 'view' && shouldCountView ? now : existing?.lastViewMs, lastPath: type === 'view' && shouldCountView ? pathName : existing?.lastPath, country: getCountry(req), device: parseDevice(ua), browser: parseBrowser(ua) }; if (isNewVisitor) statsCache.totals.visitors += 1; if (type === 'view' && (isNewVisitor || isNewVisitorToday)) statsCache.daily[today].visitors += 1; if (type === 'view') { if (!shouldCountView) { scheduleSave(); return; } statsCache.totals.pageViews += 1; statsCache.daily[today].pageViews += 1; inc(statsCache.pages, pathName); inc(statsCache.referrers, extra.referrer || req.headers.referer || 'Direct'); } if (type === 'parse') { statsCache.totals.parses += 1; statsCache.daily[today].parses += 1; } if (type === 'download') { statsCache.totals.downloads += 1; statsCache.daily[today].downloads += 1; inc(statsCache.formats, extra.format || 'Unknown'); } if (type === 'error') { statsCache.totals.errors += 1; statsCache.daily[today].errors += 1; } if (type !== 'view' || shouldCountView || isNewVisitor) { inc(statsCache.countries, getCountry(req)); inc(statsCache.devices, parseDevice(ua)); inc(statsCache.browsers, parseBrowser(ua)); addRecent(type, { visitorId, country: getCountry(req), device: parseDevice(ua), browser: parseBrowser(ua), ...extra }); } scheduleSave(); }
+function makeStatsSnapshot() { const now = Date.now(); const activeVisitors = Object.values(statsCache.visitors || {}).filter((v) => now - Number(v.lastSeenMs || 0) < 5 * 60 * 1000).length; const today = statsCache.daily[dayKey()] || { pageViews: 0, visitors: 0, parses: 0, downloads: 0, errors: 0 }; const last7 = Object.entries(statsCache.daily).sort(([a], [b]) => a.localeCompare(b)).slice(-7).map(([date, data]) => ({ date, ...data })); return { app: APP_NAME, version: BUILD_VERSION, updatedAt: statsCache.updatedAt, totals: statsCache.totals, today, activeVisitors, last7, top: { countries: Object.entries(statsCache.countries).sort((a, b) => b[1] - a[1]).slice(0, 10), devices: Object.entries(statsCache.devices).sort((a, b) => b[1] - a[1]).slice(0, 10), browsers: Object.entries(statsCache.browsers).sort((a, b) => b[1] - a[1]).slice(0, 10), pages: Object.entries(statsCache.pages).sort((a, b) => b[1] - a[1]).slice(0, 10), referrers: Object.entries(statsCache.referrers).sort((a, b) => b[1] - a[1]).slice(0, 10), formats: Object.entries(statsCache.formats).sort((a, b) => b[1] - a[1]).slice(0, 10) }, recent: statsCache.recent.slice(0, 30) }; }
+function requireAdmin(req, res, next) { const key = String(req.query.key || req.headers['x-admin-password'] || ''); if (key !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Unauthorized' }); next(); }
+function isTikTokUrl(rawUrl) { try { const url = new URL(rawUrl); const host = url.hostname.toLowerCase().replace(/^www\./, ''); return ['tiktok.com', 'vm.tiktok.com', 'vt.tiktok.com', 'm.tiktok.com'].some((allowed) => host === allowed || host.endsWith(`.${allowed}`)); } catch { return false; } }
 function cleanTitle(text = '') { return String(text).replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120) || 'TikTok video'; }
 function uniqueBy(items, keyFn) { const seen = new Set(); const out = []; for (const item of items) { const key = keyFn(item); if (!seen.has(key)) { seen.add(key); out.push(item); } } return out; }
-function normalizeFormats(info) {
-  const raw = Array.isArray(info.formats) ? info.formats : [];
-  const progressive = raw.filter((f) => f && f.format_id && f.url).filter((f) => f.vcodec && f.vcodec !== 'none').filter((f) => !f.ext || ['mp4', 'mov', 'm4v'].includes(String(f.ext).toLowerCase())).map((f) => {
-    const width = Number(f.width || 0);
-    const height = Number(f.height || 0);
-    const note = f.format_note || f.resolution || (height ? `${height}p` : 'MP4');
-    return { id: String(f.format_id), label: width && height ? `${width}×${height}` : note, quality: height || width || 0, ext: f.ext || 'mp4', hasAudio: Boolean(f.acodec && f.acodec !== 'none'), filesize: f.filesize || f.filesize_approx || null };
-  }).sort((a, b) => a.quality - b.quality);
-  const formats = uniqueBy(progressive, (f) => `${f.label}-${f.hasAudio}-${f.ext}`);
-  const best = { id: 'best[ext=mp4]/best', label: 'Best available MP4', quality: 9999, ext: 'mp4', hasAudio: true, filesize: null };
-  return [...formats.slice(-5), best].sort((a, b) => a.quality - b.quality);
-}
-async function getVideoInfo(url) {
-  const { stdout } = await execFileAsync('yt-dlp', ['-J', '--no-playlist', '--no-warnings', '--socket-timeout', '20', url], { timeout: 45000, maxBuffer: 10 * 1024 * 1024 });
-  return JSON.parse(stdout);
-}
+function normalizeFormats(info) { const raw = Array.isArray(info.formats) ? info.formats : []; const progressive = raw.filter((f) => f && f.format_id && f.url).filter((f) => f.vcodec && f.vcodec !== 'none').filter((f) => !f.ext || ['mp4', 'mov', 'm4v'].includes(String(f.ext).toLowerCase())).map((f) => { const width = Number(f.width || 0); const height = Number(f.height || 0); const note = f.format_note || f.resolution || (height ? `${height}p` : 'MP4'); return { id: String(f.format_id), label: width && height ? `${width}×${height}` : note, quality: height || width || 0, ext: f.ext || 'mp4', hasAudio: Boolean(f.acodec && f.acodec !== 'none'), filesize: f.filesize || f.filesize_approx || null }; }).sort((a, b) => a.quality - b.quality); const formats = uniqueBy(progressive, (f) => `${f.label}-${f.hasAudio}-${f.ext}`); const best = { id: 'best[ext=mp4]/best', label: 'Best available MP4', quality: 9999, ext: 'mp4', hasAudio: true, filesize: null }; return [...formats.slice(-5), best].sort((a, b) => a.quality - b.quality); }
+async function getVideoInfo(url) { const { stdout } = await execFileAsync('yt-dlp', ['-J', '--no-playlist', '--no-warnings', '--socket-timeout', '20', url], { timeout: 45000, maxBuffer: 10 * 1024 * 1024 }); return JSON.parse(stdout); }
+function esc(s='') { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderSeoPage(page) { const links = SEO_PAGES.slice(0, 10).map(p => `<a href="/${p.slug}/">${esc(p.title)}</a>`).join('<br>'); return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="index, follow, max-image-preview:large"><meta name="description" content="${esc(page.description)}"><link rel="canonical" href="https://www.virotik.com/${page.slug}/"><link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml"><link rel="stylesheet" href="/styles.css?v=20260706-2"><title>${esc(page.title)} | ViroTik</title></head><body><main class="section-pad slim"><div class="logo-card">VT</div><p class="eyebrow">ViroTik Guide</p><h1>${esc(page.h1)}<br><span>MP4 Video Saver</span></h1><p class="section-intro">${esc(page.body)}</p><div class="steps"><div class="step"><b>1</b><div><h3>Copy the public link</h3><p>Open TikTok, use the share option, and copy the video link.</p></div></div><div class="step"><b>2</b><div><h3>Paste it in ViroTik</h3><p>Return to ViroTik and paste the link in the downloader box.</p></div></div><div class="step"><b>3</b><div><h3>Choose MP4 quality</h3><p>Select an available format and save the file through your browser.</p></div></div></div><div class="cards"><article class="card featured"><h3>Use ViroTik now</h3><p>Open the main downloader and start with a public video link.</p><p style="margin-top:18px"><a class="download-another" href="/">Open ViroTik →</a></p></article><article class="card"><h3>Related guides</h3><p>${links}</p></article><article class="card"><h3>Important note</h3><p>ViroTik works with public videos only. Private, deleted, or restricted videos may not work.</p></article></div></main></body></html>`; }
 
 app.get('/health', (_req, res) => res.json({ ok: true, app: APP_NAME, version: BUILD_VERSION }));
 app.get('/api/config', (_req, res) => res.json({ appName: APP_NAME, appUrl: APP_URL, version: BUILD_VERSION, gaMeasurementId: GA_MEASUREMENT_ID, bannerAdHtml: process.env.BANNER_AD_HTML || '', directLinkUrl: process.env.DIRECT_LINK_URL || '', openDirectLinkOnDownload: process.env.OPEN_DIRECT_LINK_ON_DOWNLOAD === 'true', adCooldownSeconds: Number(process.env.AD_COOLDOWN_SECONDS || 45) }));
 app.post('/api/track', async (req, res) => { try { await recordEvent(req, 'view', { visitorId: req.body?.visitorId, path: req.body?.path || '/', referrer: req.body?.referrer || 'Direct' }); res.json({ ok: true }); } catch (err) { console.error('track failed:', err?.message || err); res.json({ ok: false }); } });
 app.get('/api/admin/stats', requireAdmin, async (_req, res) => { await loadStats(); res.json(makeStatsSnapshot()); });
 app.post('/api/admin/reset', requireAdmin, async (_req, res) => { statsCache = emptyStats(); scheduleSave(); res.json({ ok: true }); });
-
-app.post('/api/parse', apiLimiter, async (req, res) => {
-  const url = String(req.body?.url || '').trim();
-  if (!isTikTokUrl(url)) { await recordEvent(req, 'error', { reason: 'invalid_tiktok_url' }); return res.status(400).json({ error: 'Paste a valid public TikTok link.' }); }
-  try {
-    const info = await getVideoInfo(url);
-    await recordEvent(req, 'parse', { title: cleanTitle(info.title), visitorId: req.body?.visitorId });
-    res.json({ title: cleanTitle(info.title), uploader: info.uploader || info.channel || '', thumbnail: info.thumbnail || '', duration: info.duration || null, webpageUrl: info.webpage_url || url, formats: normalizeFormats(info) });
-  } catch (err) {
-    console.error('parse failed:', err?.message || err);
-    await recordEvent(req, 'error', { reason: 'parse_failed' });
-    res.status(502).json({ error: 'Could not read this TikTok link. Use a public video link and try again.' });
-  }
-});
-
-app.get('/download', apiLimiter, async (req, res) => {
-  const url = String(req.query.url || '').trim();
-  const format = String(req.query.format || 'best[ext=mp4]/best').trim();
-  if (!isTikTokUrl(url)) { await recordEvent(req, 'error', { reason: 'invalid_download_url' }); return res.status(400).send('Invalid TikTok URL.'); }
-  await recordEvent(req, 'download', { format });
-  const safeFormat = /^[a-zA-Z0-9_.,+\-\[\]=\/()]+$/.test(format) ? format : 'best[ext=mp4]/best';
-  const filename = `virotik-${Date.now()}.mp4`;
-  res.setHeader('Content-Type', 'video/mp4');
-  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-  res.setHeader('X-Accel-Buffering', 'no');
-  const child = spawn('yt-dlp', ['-f', safeFormat, '--merge-output-format', 'mp4', '--no-playlist', '--no-warnings', '-o', '-', url], { stdio: ['ignore', 'pipe', 'pipe'] });
-  child.stdout.pipe(res);
-  child.stderr.on('data', (data) => console.error(`yt-dlp: ${data}`));
-  child.on('error', (err) => { console.error('download spawn error:', err); if (!res.headersSent) res.status(500).send('Download failed.'); });
-  child.on('close', (code) => { if (code !== 0) console.error(`download process exited with code ${code}`); });
-  req.on('close', () => child.kill('SIGKILL'));
-});
-
+app.post('/api/parse', apiLimiter, async (req, res) => { const url = String(req.body?.url || '').trim(); if (!isTikTokUrl(url)) { await recordEvent(req, 'error', { reason: 'invalid_tiktok_url' }); return res.status(400).json({ error: 'Paste a valid public TikTok link.' }); } try { const info = await getVideoInfo(url); await recordEvent(req, 'parse', { title: cleanTitle(info.title), visitorId: req.body?.visitorId }); res.json({ title: cleanTitle(info.title), uploader: info.uploader || info.channel || '', thumbnail: info.thumbnail || '', duration: info.duration || null, webpageUrl: info.webpage_url || url, formats: normalizeFormats(info) }); } catch (err) { console.error('parse failed:', err?.message || err); await recordEvent(req, 'error', { reason: 'parse_failed' }); res.status(502).json({ error: 'Could not read this TikTok link. Use a public video link and try again.' }); } });
+app.get('/download', apiLimiter, async (req, res) => { const url = String(req.query.url || '').trim(); const format = String(req.query.format || 'best[ext=mp4]/best').trim(); if (!isTikTokUrl(url)) { await recordEvent(req, 'error', { reason: 'invalid_download_url' }); return res.status(400).send('Invalid TikTok URL.'); } await recordEvent(req, 'download', { format }); const safeFormat = /^[a-zA-Z0-9_.,+\-\[\]=\/()]+$/.test(format) ? format : 'best[ext=mp4]/best'; const filename = `virotik-${Date.now()}.mp4`; res.setHeader('Content-Type', 'video/mp4'); res.setHeader('Content-Disposition', `attachment; filename="${filename}"`); res.setHeader('X-Accel-Buffering', 'no'); const child = spawn('yt-dlp', ['-f', safeFormat, '--merge-output-format', 'mp4', '--no-playlist', '--no-warnings', '-o', '-', url], { stdio: ['ignore', 'pipe', 'pipe'] }); child.stdout.pipe(res); child.stderr.on('data', (data) => console.error(`yt-dlp: ${data}`)); child.on('error', (err) => { console.error('download spawn error:', err); if (!res.headersSent) res.status(500).send('Download failed.'); }); child.on('close', (code) => { if (code !== 0) console.error(`download process exited with code ${code}`); }); req.on('close', () => child.kill('SIGKILL')); });
 app.get('/admin', (_req, res) => { res.setHeader('Cache-Control', 'no-store'); res.sendFile(path.join(__dirname, 'public', 'admin.html')); });
+app.get('/:slug/', (req, res, next) => { const page = SEO_PAGES.find(p => p.slug === req.params.slug); if (!page) return next(); res.setHeader('Cache-Control', 'public, max-age=300'); res.send(renderSeoPage(page)); });
 app.get('*', (_req, res) => { res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate'); res.sendFile(path.join(__dirname, 'public', 'index.html')); });
 app.listen(PORT, () => console.log(`${APP_NAME} website running on port ${PORT} (${BUILD_VERSION})`));
