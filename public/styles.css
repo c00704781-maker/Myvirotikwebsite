@@ -63,7 +63,7 @@ h2 { margin: 0 0 18px; text-align: center; font-size: clamp(2rem, 6vw, 3.7rem); 
 h3 { margin: 0 0 10px; font-size: 1.35rem; }
 .hero-copy, .section-intro { color: var(--muted); font-size: clamp(1rem, 3.8vw, 1.28rem); line-height: 1.65; max-width: 760px; margin: 18px auto 24px; }
 
-.download-box { display: grid; gap: 13px; margin: 0 auto; max-width: 740px; padding: 12px; border: 1px solid var(--line); border-radius: 28px; background: var(--panel); box-shadow: var(--shadow); }
+.download-box { display: grid; gap: 13px; margin: 32px auto 0; max-width: 740px; padding: 12px; border: 1px solid var(--line); border-radius: 28px; background: var(--panel); box-shadow: var(--shadow); }
 .download-box[hidden] { display: none !important; }
 .download-box input { min-height: 62px; border: 1px solid var(--line); border-radius: 18px; background: rgba(0,0,0,.18); color: var(--text); padding: 0 18px; outline: none; }
 .download-box input:focus { border-color: rgba(139,92,246,.8); box-shadow: 0 0 0 4px rgba(139,92,246,.16); }
